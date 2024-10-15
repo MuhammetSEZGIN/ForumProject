@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('genres', function (Blueprint $table) {
+        Schema::create('article__category', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->foreignId("articleID")->constrained("articles", "articleID");
+            $table->foreignId("categoryID")->constrained("categories", "categoryID");
             $table->timestamps();
         });
     }
@@ -23,6 +24,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('genres');
+        Schema::disableForeignKeyConstraints();
+        Schema::dropIfExists('article__category');
     }
 };

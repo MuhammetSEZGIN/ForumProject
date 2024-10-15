@@ -7,11 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model
 {
-    /** @use HasFactory<\Database\Factories\CommentsFactory> */
-    use HasFactory;
 
+    use HasFactory;
+    protected $table = "comments";
+    protected $primaryKey = "commentID";
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, "userID", "id");
     }
+    public function article()
+    {
+        return $this->belongsTo(Article::class , "articleID", "articleID");
+    }
+
 }

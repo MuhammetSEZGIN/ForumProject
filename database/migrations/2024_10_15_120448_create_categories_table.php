@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('movie_genres', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('movie_id')->constrained("movies")->cascadeOnDelete();
-            $table->foreignId('genre_id')->constrained("genres")->cascadeOnDelete();
+        Schema::create('categories', function (Blueprint $table) {
+            $table->id("categoryID");
+            $table->string('categoryName');
             $table->timestamps();
         });
     }
@@ -24,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('movie_genres');
+        Schema::dropIfExists('categories');
     }
 };
