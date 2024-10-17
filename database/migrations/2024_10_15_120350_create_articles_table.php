@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id("articleID");
             $table->foreignId("authorID")->constrained("users", "id");
             $table->text("content");
+            $table->text("title");
+            $table->integer("viewCount");
             $table->timestamps();
         });
     }
