@@ -7,6 +7,7 @@ use App\Models\Comment;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Http\File;
 use Illuminate\Support\Facades\DB;
 
 class BaseSeeder extends Seeder
@@ -14,6 +15,13 @@ class BaseSeeder extends Seeder
     /**
      * Run the database seeds.
      */
+    public function getTxtContent($path){
+        try{
+            return file_get_contents($path);
+        }catch (\Exception $e){
+            return $e->getMessage();
+        }
+    }
     public function run(): void
     {
 
@@ -40,21 +48,21 @@ class BaseSeeder extends Seeder
        ]);
 
        DB::table("articles")->insert([
-           [ "content" => "PHP Basics", "authorID" => 1, "created_at" => now(), "updated_at" => now()],
-           [ "content" => "Laravel Basics", "authorID" => 2, "created_at" => now(), "updated_at" => now()],
-           [ "content" => "JavaScript Basics", "authorID" => 3, "created_at" => now(), "updated_at" => now()],
-           [ "content" => "VueJS Basics", "authorID" => 4, "created_at" => now(), "updated_at" => now()],
-           ["content" => "ReactJS Basics", "authorID" => 5, "created_at" => now(), "updated_at" => now()],
-           [ "content" => "Angular Basics", "authorID" => 6, "created_at" => now(), "updated_at" => now()],
+           [ "content" =>$this->getTxtContent("public/SeedContent/loremContent.txt") , "authorID" => 1,"title"=>"Birinci Yazi","viewCount"=>1, "created_at" => now(), "updated_at" => now()],
+           [ "content" => $this->getTxtContent("public/SeedContent/loremContent.txt"), "authorID" => 2,"title"=>"İkinci yazi","viewCount"=>2 ,"created_at" => now(), "updated_at" => now()],
+           [ "content" => $this->getTxtContent("public/SeedContent/loremContent.txt"), "authorID" => 3,"title"=>"Ucuncu Yazi","viewCount"=>3 ,"created_at" => now(), "updated_at" => now()],
+           [ "content" => $this->getTxtContent("public/SeedContent/loremContent.txt"), "authorID" => 4,"title"=>"Dorduncu Yazi","viewCount"=>1, "created_at" => now(), "updated_at" => now()],
+           ["content" => $this->getTxtContent("public/SeedContent/loremContent.txt"), "authorID" => 5,"title"=>"Besinci Yazi","viewCount"=>4, "created_at" => now(), "updated_at" => now()],
+           [ "content" => $this->getTxtContent("public/SeedContent/loremContent.txt"), "authorID" => 6,"title"=>"Altinci Yazi","viewCount"=>5, "created_at" => now(), "updated_at" => now()],
        ]);
 
        DB::table("comments")->insert([
-              ["content" => "Great Article", "articleID" => 1, "authorID" => 2, "created_at" => now(), "updated_at" => now()],
-              ["content" => "Great Article", "articleID" => 2, "authorID" => 3, "created_at" => now(), "updated_at" => now()],
-              ["content" => "Great Article", "articleID" => 3, "authorID" => 4, "created_at" => now(), "updated_at" => now()],
-              ["content" => "Great Article", "articleID" => 4, "authorID" => 5, "created_at" => now(), "updated_at" => now()],
-              ["content" => "Great Article", "articleID" => 5, "authorID" => 6, "created_at" => now(), "updated_at" => now()],
-              ["content" => "Great Article", "articleID" => 6, "authorID" => 1, "created_at" => now(), "updated_at" => now()],
+              ["content" => "Great Article", "articleID" => 1,"userID"=>"2", "created_at" => now(), "updated_at" => now()],
+              ["content" => "Great Article", "articleID" => 2,"userID"=>"3", "created_at" => now(), "updated_at" => now()],
+              ["content" => "Great Article", "articleID" => 3,"userID"=>"4", "created_at" => now(), "updated_at" => now()],
+              ["content" => "Great Article", "articleID" => 4,"userID"=>"1", "created_at" => now(), "updated_at" => now()],
+              ["content" => "Great Article", "articleID" => 5,"userID"=>"1", "created_at" => now(), "updated_at" => now()],
+              ["content" => "Great Article", "articleID" => 6,"userID"=>"3", "created_at" => now(), "updated_at" => now()],
          ]);
 
        DB::table("article__category")->insert([
