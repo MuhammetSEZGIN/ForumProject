@@ -9,12 +9,14 @@ use Illuminate\Http\Request;
 class CommentController extends Controller
 {
     public function sendComment(Request $request){
-        dd($request->all());
+
         $request->validate([
             'content' => 'required|string|max:255',
             'articleID' => 'required|integer',
         ]);
-        $userID = $request->get('userID') ?? "Anonim";
+        $userID = (int)($request->get('userID')) ?? 0;
+
+
         Comment::query()->insert([
             "articleID"=>$request->get('articleID'),
             "userID" => $userID,

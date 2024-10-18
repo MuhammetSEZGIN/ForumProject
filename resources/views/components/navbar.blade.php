@@ -12,6 +12,19 @@
             <li class="nav-item">
                 <x-nav-item href="{{route('PopularArticles')}}">En Çok Okunanlar</x-nav-item>
             </li>
+            @auth
+            <li class="nav-item">
+                <x-nav-item href="#">Makalelerim</x-nav-item>
+            </li>
+            <li class="nav-item">
+                <x-nav-item href="#">Yorumlar</x-nav-item>
+            </li>
+
+            <li class="nav-item">
+                <x-nav-item href="{{route('addArticle')}}">Yeni Makale Ekle</x-nav-item>
+            </li>
+
+            @endauth
             @guest
                 @if(!request()->is('login'))
                 <li class="nav-item ms-auto">
@@ -20,13 +33,35 @@
                 @endif
             @endguest
             @auth
-                <li class="nav-item ms-auto">
-                    <form action="{{route('logout')}}" method="POST">
-                        @csrf
-                        <button type="submit" class="btn btn-danger">Çıkış Yap</button>
-                    </form>
+{{--                <li class="nav-item ms-auto">--}}
+{{--                    <form action="{{route('logout')}}" method="POST">--}}
+{{--                        @csrf--}}
+{{--                        <button type="submit" class="btn btn-danger">Çıkış Yap</button>--}}
+{{--                    </form>--}}
+{{--                </li>--}}
+
+                <li>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            {{ Auth::getUser()["name"]}}
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item text-center" href="#">Profil</a></li>
+
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <div class="d-grid gap-2 col-6 mx-auto ">
+                                <form action="{{route('logout')}}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="btn btn-danger btn-sm">Çıkış Yap</button>
+                                </form>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
             @endauth
+
         </ul>
     </div>
 </nav>

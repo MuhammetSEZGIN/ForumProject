@@ -11,6 +11,7 @@ class Article extends Model
     use HasFactory;
     protected $table = "articles";
     protected $primaryKey = "articleID";
+    protected $guarded = [];
     public function user()
     {
         return $this->belongsTo(User::class, "authorID", "id");

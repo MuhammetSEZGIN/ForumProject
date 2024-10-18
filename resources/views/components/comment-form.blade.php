@@ -29,7 +29,7 @@
                     <form method="POST" action="{{route('sendComment')}}" >
                        @csrf
                         <input type="hidden"  name="articleID" value="{{$messages->articleID}}">
-                        <input type="hidden"  name="userID" value="{{\Illuminate\Support\Facades\Auth::getUser()}}">
+                        <input type="hidden"  name="userID" value="{{\Illuminate\Support\Facades\Auth::getUser()["id"]??0}}">
 
                         <div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
                             <div class="d-flex flex-start w-100">
