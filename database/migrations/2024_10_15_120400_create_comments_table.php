@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId("articleID")->constrained("articles", "articleID");
             $table->foreignId("userID")->constrained("users", "id");
             $table->text("content");
+            $table->boolean("isApproved")->default(false);
             $table->timestamps();
         });
     }

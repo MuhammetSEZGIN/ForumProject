@@ -43,7 +43,10 @@
 
                 </div>
             </form>
-            <a  href="{{route('register')}}" class="btn btn-primary">Register</a>
+            <form method="GET" action="{{route("register")}}">
+                <button type="submit" class="btn btn-primary" >Register</button>
+            </form>
+
 
         </div>
     </x-slot>
