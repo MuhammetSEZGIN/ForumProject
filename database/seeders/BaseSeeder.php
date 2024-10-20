@@ -24,10 +24,13 @@ class BaseSeeder extends Seeder
     }
     public function run(): void
     {
-
+        User::query()->create(
+            ["name"=>"anonim", "email"=>"anonim@gmail.com", "password"=>"qwe", "created_at"=>now(), "updated_at"=>now()],
+        );
        User::factory(6)->create();
 
         DB::table("roles")->insert([
+            ["name" => "anonim","userID" => 0],
             ["name" => "admin", "userID" => 1],
             ["name" => "author", "userID" => 2],
             ["name" => "author", "userID" => 3],
@@ -48,21 +51,21 @@ class BaseSeeder extends Seeder
        ]);
 
        DB::table("articles")->insert([
-           [ "content" =>$this->getTxtContent("public/SeedContent/loremContent.txt") , "authorID" => 1,"title"=>"Birinci Yazi","viewCount"=>1, "created_at" => now(), "updated_at" => now()],
-           [ "content" => $this->getTxtContent("public/SeedContent/loremContent.txt"), "authorID" => 2,"title"=>"İkinci yazi","viewCount"=>2 ,"created_at" => now(), "updated_at" => now()],
-           [ "content" => $this->getTxtContent("public/SeedContent/loremContent.txt"), "authorID" => 3,"title"=>"Ucuncu Yazi","viewCount"=>3 ,"created_at" => now(), "updated_at" => now()],
-           [ "content" => $this->getTxtContent("public/SeedContent/loremContent.txt"), "authorID" => 4,"title"=>"Dorduncu Yazi","viewCount"=>1, "created_at" => now(), "updated_at" => now()],
-           ["content" => $this->getTxtContent("public/SeedContent/loremContent.txt"), "authorID" => 5,"title"=>"Besinci Yazi","viewCount"=>4, "created_at" => now(), "updated_at" => now()],
-           [ "content" => $this->getTxtContent("public/SeedContent/loremContent.txt"), "authorID" => 6,"title"=>"Altinci Yazi","viewCount"=>5, "created_at" => now(), "updated_at" => now()],
+           [ "content" =>$this->getTxtContent("public/SeedContent/loremContent.txt") , "authorID" => 1,"title"=>"Birinci Yazi","viewCount"=>1,"isActive"=>true, "created_at" => now(), "updated_at" => now()],
+           [ "content" => $this->getTxtContent("public/SeedContent/loremContent.txt"), "authorID" => 2,"title"=>"İkinci yazi","viewCount"=>2 ,"isActive"=>true,"created_at" => now(), "updated_at" => now()],
+           [ "content" => $this->getTxtContent("public/SeedContent/loremContent.txt"), "authorID" => 3,"title"=>"Ucuncu Yazi","viewCount"=>3 ,"isActive"=>true,"created_at" => now(), "updated_at" => now()],
+           [ "content" => $this->getTxtContent("public/SeedContent/loremContent.txt"), "authorID" => 4,"title"=>"Dorduncu Yazi","viewCount"=>1,"isActive"=>true, "created_at" => now(), "updated_at" => now()],
+           ["content" => $this->getTxtContent("public/SeedContent/loremContent.txt"), "authorID" => 5,"title"=>"Besinci Yazi","viewCount"=>4,"isActive"=>true, "created_at" => now(), "updated_at" => now()],
+           [ "content" => $this->getTxtContent("public/SeedContent/loremContent.txt"), "authorID" => 6,"title"=>"Altinci Yazi","viewCount"=>5,"isActive"=>true, "created_at" => now(), "updated_at" => now()],
        ]);
 
        DB::table("comments")->insert([
-              ["content" => "Great Article", "articleID" => 1,"userID"=>"2", "created_at" => now(), "updated_at" => now()],
-              ["content" => "Great Article", "articleID" => 2,"userID"=>"3", "created_at" => now(), "updated_at" => now()],
-              ["content" => "Great Article", "articleID" => 3,"userID"=>"4", "created_at" => now(), "updated_at" => now()],
-              ["content" => "Great Article", "articleID" => 4,"userID"=>"1", "created_at" => now(), "updated_at" => now()],
-              ["content" => "Great Article", "articleID" => 5,"userID"=>"1", "created_at" => now(), "updated_at" => now()],
-              ["content" => "Great Article", "articleID" => 6,"userID"=>"3", "created_at" => now(), "updated_at" => now()],
+              ["content" => "Great Article", "articleID" => 1,"userID"=>"2", "created_at" => now(),"isApproved"=>true, "updated_at" => now()],
+              ["content" => "Great Article", "articleID" => 2,"userID"=>"3", "created_at" => now(),"isApproved"=>true, "updated_at" => now()],
+              ["content" => "Great Article", "articleID" => 3,"userID"=>"4", "created_at" => now(),"isApproved"=>true, "updated_at" => now()],
+              ["content" => "Great Article", "articleID" => 4,"userID"=>"1", "created_at" => now(),"isApproved"=>true, "updated_at" => now()],
+              ["content" => "Great Article", "articleID" => 5,"userID"=>"1", "created_at" => now(),"isApproved"=>true, "updated_at" => now()],
+              ["content" => "Great Article", "articleID" => 6,"userID"=>"3", "created_at" => now(),"isApproved"=>true, "updated_at" => now()],
          ]);
 
        DB::table("article__category")->insert([

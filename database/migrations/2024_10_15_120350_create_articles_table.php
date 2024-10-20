@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text("content");
             $table->text("title");
             $table->integer("viewCount");
+            $table->boolean("isActive");
             $table->timestamps();
         });
     }

@@ -6,15 +6,12 @@
         <h1>{{$header}}</h1>
         @foreach($articles as $article)
             <h2>{{$article->title}}</h2>
-            <p>{{\Illuminate\Support\Str::limit($article->content,300)}}
-                <a href="{{route("article",$article->articleID)}}">Devamını Oku</a>
+            <p>{{ \Illuminate\Support\Str::limit($article->content, 300) }}
+                <a href="{{ route('showArticle', ['id' => $article->articleID]) }}">Show Article</a>
             </p>
-
         @endforeach
         <div>
-            {{$articles->links()}}
+            {{ $articles->links() }}
         </div>
     </x-slot>
-
 </x-layout>
-

@@ -13,16 +13,18 @@
                 <x-nav-item href="{{route('PopularArticles')}}">En Çok Okunanlar</x-nav-item>
             </li>
             @auth
-            <li class="nav-item">
-                <x-nav-item href="#">Makalelerim</x-nav-item>
-            </li>
-            <li class="nav-item">
-                <x-nav-item href="#">Yorumlar</x-nav-item>
-            </li>
 
-            <li class="nav-item">
-                <x-nav-item href="{{route('addArticle')}}">Yeni Makale Ekle</x-nav-item>
-            </li>
+                <li class="nav-item">
+                    <x-nav-item href="{{route('myArticles')}}">Makalelerim</x-nav-item>
+                </li>
+
+                <li class="nav-item">
+                    <x-nav-item href="{{route('myComments')}}">Yorumlar</x-nav-item>
+                </li>
+
+                <li class="nav-item">
+                    <x-nav-item href="{{route('addArticle')}}">Yeni Makale Ekle</x-nav-item>
+                </li>
 
             @endauth
             @guest
@@ -40,7 +42,7 @@
 {{--                    </form>--}}
 {{--                </li>--}}
 
-                <li>
+                <li class="nav-item ms-auto">
                     <div class="btn-group">
                         <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                             {{ Auth::getUser()["name"]}}

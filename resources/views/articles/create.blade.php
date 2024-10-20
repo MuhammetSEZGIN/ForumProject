@@ -35,8 +35,6 @@
                 <div id="editor">
                 </div>
                 <x-error-text name="title"></x-error-text>
-
-                <input type="hidden" name="authorID" value="{{\Illuminate\Support\Facades\Auth::getUser()["id"]}}">
                 <textarea name="text" style="display:none" id="hiddenArea"></textarea>
             <input type="submit" value="Save" />
         </div>
