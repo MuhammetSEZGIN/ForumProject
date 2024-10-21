@@ -8,6 +8,7 @@ use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use App\Helpers\UserActionLogHelper;
 
 class ArticleController extends Controller
 {
@@ -69,9 +70,6 @@ class ArticleController extends Controller
             "categoryID"=>"required",
 
         ]);
-
-
-
         $newArticle=Article::create([
             "title"=>$validatedData["title"],
             "content"=>$validatedData["text"],
@@ -82,8 +80,11 @@ class ArticleController extends Controller
 
         if($newArticle){
             $newArticle->category()->attach($validatedData["categoryID"]);
+            userActionLogHelper::logAction("Yeni makale eklendi", $request->all());
+
             return redirect("mainMenu");
         }else{
+            userActionLogHelper::logAction("Makale eklenemedi", $validatedData);
             throw ValidationException::withMessages([
                 "title"=>"Article could not be created",
 
@@ -121,20 +122,24 @@ class ArticleController extends Controller
             "categoryID"=>"required",
         ]);
 
-       $updatedArticle=Article::query()->findOrFail($id);
+        $updatedArticle=Article::query()->findOrFail($id);
         $updatedArticle->update([
             "title"=>$validatedData["title"],
             "content"=>$validatedData["text"],
         ]);
-
         $updatedArticle->category()->attach($validatedData["categoryID"]);
+        UserActionLogHelper::logAction("Makale guncellendi", $request->all());
         return redirect()->route('showArticle', ['id' => $id]);
     }
 
     public function deleteArticle($id){
         $article=Article::query()->findOrFail($id);
         $article->isActive=false;
-        $article->save();
+        if($article->save()){
+            UserActionLogHelper::logAction("Makale silindi", request()->all());
+        }else{
+            UserActionLogHelper::logAction("Makale silinemedi", request()->all());
+        }
         return redirect('myArticles');
     }
 }

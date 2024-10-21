@@ -11,10 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('roles', function (Blueprint $table) {
+        Schema::create('userActionLogs', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->foreignId('userID')->constrained('users');
+            $table->foreignId('userID')->nullable()->constrained('users')->cascadeOnDelete();
+            $table->string('action')->nullable();
+            $table->ipAddress('ip');
+            $table->string('userAgent');
+            $table->json('postData');
             $table->timestamps();
         });
     }
@@ -25,6 +28,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::disableForeignKeyConstraints();
-        Schema::dropIfExists('roles');
+        Schema::dropIfExists('userActionLogs');
+
     }
 };

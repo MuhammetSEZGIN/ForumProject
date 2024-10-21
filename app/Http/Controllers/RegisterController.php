@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Helpers\UserActionLogHelper;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,6 +24,11 @@ class RegisterController extends Controller
 
         // bu neden ben de kızıyor
         $user=User::create($validatedAttribute);
+        if($user){
+            UserActionLogHelper::logAction("Kullanici kaydi", $request->all());
+        }else{
+            UserActionLogHelper::logAction("Kullanici kaydi basarisiz", $request->all());
+        }
         // şifreyi her türlü hash liyormuş zaten
 
 //        DB::table('users')->insert([
@@ -31,7 +37,6 @@ class RegisterController extends Controller
 //            'password'=>Hash::make($request['password']),
 //            'email_verified_at' => now(),
 //        ]);
-
         Auth::login($user);
         return redirect('mainMenu');
     }

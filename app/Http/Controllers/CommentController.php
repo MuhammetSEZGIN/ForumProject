@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\UserActionLogHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\Comment;
@@ -33,7 +34,11 @@ class CommentController extends Controller
     }
     public function deleteComment($id){
 
-        Comment::query()->findOrFail($id)->delete();
+        if(Comment::query()->findOrFail($id)->delete()) {
+            userActionLogHelper::logAction("Yorum silindi", request()->all());
+        }else{
+            userActionLogHelper::logAction("Yorum silinemedi", request()->all());
+        }
         return redirect()->back();
     }
     public function getComments(){
@@ -46,9 +51,14 @@ class CommentController extends Controller
 
     }
     public function approveComment($id){
-        Comment::query()->findOrFail($id)->update([
+        if(Comment::query()->findOrFail($id)->update([
             "isApproved"=>true,
-        ]);
+        ])){
+            userActionLogHelper::logAction("Yorum onaylandı", request()->all());
+        }else
+        {
+            userActionLogHelper::logAction("Yorum onaylanamadı", request()->all());
+        }
         return redirect()->back();
     }
     public function myComments(){
