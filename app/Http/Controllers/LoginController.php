@@ -5,6 +5,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use App\Helpers\UserActionLogHelper;
+
 
 class LoginController extends Controller{
 
@@ -22,9 +24,11 @@ class LoginController extends Controller{
         $control = Auth::attempt($validatedData);
         if($control){
             $request->session()->regenerate();
+            userActionLogHelper::logAction("Kullanici girisi", $request->all());
             return redirect('mainMenu');
        }else{
-           throw ValidationException::withMessages([
+            userActionLogHelper::logAction("Yanlis giris denemesi", $request->all());
+            throw ValidationException::withMessages([
                "name"=>"Kullanici adi ve şifre uyuşmuyor"
            ]);
         }
@@ -34,6 +38,7 @@ class LoginController extends Controller{
     public function logout()
     {
         Auth::logout();
+        userActionLogHelper::logAction("Kullanici cikisi", request()->all());
         return redirect('login');
     }
 }

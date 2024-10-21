@@ -10,68 +10,39 @@
                 <div class="container form-container">
                     <div class="row">
                         <div class="col-12">
-                            <label class="form-label">User Name</label>
-                            <div class="input-icon mb-3">
-                        <span class="input-icon-addon">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <circle cx="12" cy="7" r="4" />
-                                <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-                            </svg>
-                        </span>
-                                <input type="text"  name="name" class="form-control" placeholder="Username" required />
-                                <x-error-text name="name"/>
+                            <div data-mdb-input-init class="form-outline mb-4">
+                                <input type="text" id="form2Example1" name="name" class="form-control" value="{{old('name')}}" required />
+                                <label class="form-label" for="form2Example1">Kullanıcı Adı</label>
                             </div>
+                            <x-error-text name="name"/>
                         </div>
                     </div> <div class="row">
                         <div class="col-12">
-                            <label class="form-label">Email</label>
-                            <div class="input-icon mb-3">
-                        <span class="input-icon-addon">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <circle cx="12" cy="7" r="4" />
-                                <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-                            </svg>
-                        </span>
-                                <input type="text" name="email" class="form-control" placeholder="email" />
-                                <x-error-text name="email"/>
+                            <div data-mdb-input-init class="form-outline mb-4">
+                                <input type="text" id="form2Example1" name="email" class="form-control" value="{{old('name')}}" required />
+                                <label class="form-label" for="form2Example1">E-mail</label>
                             </div>
+                            <x-error-text name="name"/>
                         </div>
                     </div> <div class="row">
                         <div class="col-12">
-                            <label class="form-label">Password</label>
-                            <div class="input-icon mb-3">
-                        <span class="input-icon-addon">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <circle cx="12" cy="7" r="4" />
-                                <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-                            </svg>
-                        </span>
-                                <input type="password" name="password" class="form-control" placeholder="Password" />
-                                <x-error-text name="password"/>
+                            <div data-mdb-input-init class="form-outline mb-4">
+                                <input type="password" id="form2Example2" name="password" class="form-control"  required />
+                                <label class="form-label" for="form2Example2">Şifre</label>
                             </div>
+                            <x-error-text name="password"/>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-12">
-                            <label class="form-label">Confirm Password</label>
-                            <div class="input-icon mb-3">
-                        <span class="input-icon-addon">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <circle cx="12" cy="7" r="4" />
-                                <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-                            </svg>
-                        </span>
-                                {{--illaki adı password_confirmation olacak validation içerisindeki değeri kontrol için--}}
-                                <input type="password" name="password_confirmation" value="" class="form-control" placeholder="Confirm Password" />
-                                <x-error-text name="password_confirmation"/>
+                            <div data-mdb-input-init class="form-outline mb-4">
+                                <input type="password" id="form2Example2" name="password_confirmation" class="form-control"  required />
+                                <label class="form-label" for="form2Example2">Şifre Tekrarı</label>
                             </div>
+                            <x-error-text name="password_confirmation"/>
                         </div>
-                        <button type="submit" class="btn btn-primary">Register</button>
+                        <button type="submit" class="btn btn-primary">Kaydol</button>
 
                     </div>
                 </div>

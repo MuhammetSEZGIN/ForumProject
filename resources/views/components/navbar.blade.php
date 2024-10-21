@@ -44,7 +44,7 @@
 
                 <li class="nav-item ms-auto">
                     <div class="btn-group">
-                        <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        <button type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                             {{ Auth::getUser()["name"]}}
                         </button>
                         <ul class="dropdown-menu">

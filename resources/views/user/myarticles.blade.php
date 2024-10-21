@@ -3,43 +3,45 @@
         <x-navbar/>
     </x-slot>
     <x-slot name="body">
-        <table class="table">
+        <table class="table text-center">
             <thead>
             <tr>
                 <th scope="col">Makale Başlık</th>
                 <th scope="col">Yazar</th>
                 <th scope="col">Yayın Tarihi</th>
-                <th scope="col">--</th>
+                <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
-@if(count($articles)!==0)
+            @if(count($articles)!==0)
 
-    @foreach($articles as $article)
+                @foreach($articles as $article)
 
-        <tr>
-            <td>{{$article->title}}</td>
-            <td>{{$article->user->name}}</td>
-            <td>{{$article->created_at}}</td>
+                    <tr>
+                        <td>{{$article->title}}</td>
+                        <td>{{$article->user->name}}</td>
+                        <td>{{$article->created_at}}</td>
 
-            <td><form action="{{route('article.edit.show',['id'=>$article->articleID])}}" method="GET">
-                    <input type="submit" value="Düzenle">
-                </form></td>
-                <td><form action="{{route("deleteArticle",['id'=>$article->articleID])}}" method="POST">
-                   @csrf
-                    @method('DELETE')
-                    <input type="submit" value="Sil">
-                </form></td>
-        </tr>
+                        <td class="d-flex gap-1">
+                            <form action="{{route('article.edit.show',['id'=>$article->articleID])}}" method="GET">
+                                <button class="btn btn-primary btn-sm" type="submit">Düzenle</button>
+                            </form>
+                            <form action="{{route("deleteArticle",['id'=>$article->articleID])}}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-danger btn-sm" type="submit">Sil</button>
+                            </form>
+                        </td>
+                    </tr>
 
-    @endforeach
-@else
-    <tr >
-        <td colspan="5" ><p class="text-center">Makale Bulunmamakta</p></td>
-    </tr>
-    @endif
+                @endforeach
+            @else
+                <tr>
+                    <td colspan="5"><p class="text-center">Makale Bulunmamakta</p></td>
+                </tr>
+            @endif
 
-    </tbody>
-    </table>
+            </tbody>
+        </table>
     </x-slot>
-    </x-layout>
+</x-layout>
