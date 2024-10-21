@@ -51,6 +51,8 @@ class ArticleController extends Controller
         $article = Article::with(['comments'=>function($query){
             $query->where('isApproved',true);
         }])->findOrFail($id);
+        $article->viewCount++;
+        $article->save();
         return view('articles.show', [
             'article' => $article,
         ]);
@@ -115,7 +117,8 @@ class ArticleController extends Controller
         ]);
     }
 
-    public function editArticle(Request $request, $id){
+    public function editArticle(Request $request){
+        $id=Auth::id();
         $validatedData = $request->validate([
             "title"=>"required",
             "text"=>"required",

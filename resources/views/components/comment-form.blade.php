@@ -1,6 +1,7 @@
 @props(["messages" => []])
 
-<section style="background-color: #eee;">
+<p class="fs-3 text-center mt-5 ">Yorumlar</p>
+<section style="background-color: #ffffff;">
     <div class="container my-5 py-5">
         <div class="row d-flex justify-content-center">
             <div class="col-md-12 col-lg-10 col-xl-8">
@@ -42,7 +43,7 @@
 
                             </div>
                             <div class="float-end mt-2 pt-1">
-                                <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-sm">Gönder</button>
+                                <button type="submit"  class="btn btn-primary btn-sm">Gönder</button>
                             </div>
                         </div>
                     </form>
