@@ -9,7 +9,7 @@
                 <th scope="col">Makale Başlık</th>
                 <th scope="col">Yorum Sahibi</th>
                 <th scope="col">Yorum</th>
-                <th scope="col">Yarum Tarihi</th>
+                <th scope="col">Yorum Tarihi</th>
                 <th scope="col"></th>
             </tr>
             </thead>
@@ -36,7 +36,11 @@
                     <form action="{{route("deleteComment",$comment->commentID)}}" method="POST">
                         @csrf
                         @method('DELETE')
-                        <button class="btn btn-danger btn-sm" type="submit">Sil</button>
+                        <x-modal-button class="btn btn-danger btn-sm">
+                            <x-slot name="modalTitleText">Sil</x-slot>
+                            <x-slot name="modalButtonText">Sil</x-slot>
+                            <x-slot name="modalBodyText">Yorumu silmek istediğinize emin misiniz?</x-slot>
+                        </x-modal-button>
                     </form>
                 </td>
             </tr>

@@ -42,13 +42,12 @@
                         <textarea name="text" style="display:none" id="hiddenArea"></textarea>
                     </div>
                     <div class="col d-flex justify-content-end">
-                        <input type="submit" class="btn btn-success " value="Save"/>
+                        <input type="submit" class="btn btn-success" id="saveButton" value="Save"/>
                     </div>
                 </div>
 
             </div>
         </form>
-
         <!-- Include the Quill library -->
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
@@ -60,8 +59,9 @@
 
             $("#identifier").on("submit", function () {
                 // Quill editor içeriğini alıp textarea'ya aktaralım
-
                 $("#hiddenArea").val(quill.root.innerHTML);
+
+
             });
         </script>
 
