@@ -44,6 +44,7 @@
                             </div>
                             <x-error-text name="content"></x-error-text>
                             <x-modal-button>
+                                <x-slot name="modalTitleText">Yorum Gönder</x-slot>
                                 <x-slot name="modalButtonText">Gönder</x-slot>
                                 <x-slot name="modalBodyText">Yorumu göndermek ister misiniz?.</x-slot>
                             </x-modal-button>

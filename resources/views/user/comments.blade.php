@@ -39,7 +39,7 @@
                         <x-modal-button class="btn btn-danger btn-sm">
                             <x-slot name="modalTitleText">Sil</x-slot>
                             <x-slot name="modalButtonText">Sil</x-slot>
-                            <x-slot name="modalBodyText">Yorumu silmek istediğinize emin misiniz?</x-slot>
+                            <x-slot name="modalBodyText">Yorumu silmek ister misiniz?</x-slot>
                         </x-modal-button>
                     </form>
                 </td>
