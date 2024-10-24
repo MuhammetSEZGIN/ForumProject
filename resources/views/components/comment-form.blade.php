@@ -37,14 +37,19 @@
                             <div class="d-flex flex-start w-100">
 
                                 <div data-mdb-input-init class="form-outline w-100">
-                                    <textarea class="form-control" name="content" id="textAreaExample" rows="4" style="background: #fff;"></textarea>
+                                    <textarea class="form-control" name="content" id="textAreaExample" rows="4" style="background: #fff;" required ></textarea>
                                     <label class="form-label" for="textAreaExample">Message</label>
                                 </div>
 
                             </div>
-                            <div class="float-end mt-2 pt-1">
+                            <x-error-text name="content"></x-error-text>
+                            <x-modal-button>
+                                <x-slot name="modalButtonText">Gönder</x-slot>
+                                <x-slot name="modalBodyText">Yorumu göndermek ister misiniz?.</x-slot>
+                            </x-modal-button>
+                          {{--  <div class="float-end mt-2 pt-1">
                                 <button type="submit"  class="btn btn-primary btn-sm">Gönder</button>
-                            </div>
+                            </div>--}}
                         </div>
                     </form>
 

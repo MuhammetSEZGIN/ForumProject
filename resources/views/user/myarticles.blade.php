@@ -29,7 +29,11 @@
                             <form action="{{route("deleteArticle",['id'=>$article->articleID])}}" method="POST">
                                 @csrf
                                 @method('DELETE')
-                                <button class="btn btn-danger btn-sm" type="submit">Sil</button>
+                                <x-modal-button class="btn btn-danger btn-sm">
+                                    <x-slot name="modalTitleText">Sil</x-slot>
+                                    <x-slot name="modalButtonText">Sil</x-slot>
+                                    <x-slot name="modalBodyText">Makaleyi silmek istediğinize emin misiniz?</x-slot>
+                                </x-modal-button>
                             </form>
                         </td>
                     </tr>

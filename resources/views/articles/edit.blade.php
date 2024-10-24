@@ -43,7 +43,10 @@
                         <textarea name="text" style="display:none" id="hiddenArea"></textarea>
                     </div>
                     <div class="col d-flex justify-content-end">
-                        <input type="submit" class="btn btn-success " value="Save"/>
+                        <x-modal-button class="btn btn-success">
+                            <x-slot name="modalButtonText">Save</x-slot>
+                            <x-slot name="modalBodyText">Değişiklikleri kaydetmek ister misiniz?</x-slot>
+                            </x-modal-button>
                     </div>
                 </div>
             </div>

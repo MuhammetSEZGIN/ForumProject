@@ -5,7 +5,14 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Middleware\UserLogs;
+use App\Mail\AuthReset;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
+
+Route::get('/test', function () {
+    Mail::to('sezginmuhammet454@gmail.com')->send(new AuthReset());
+    return "Mail Sent";
+});
 
 // Register Routes
 Route::post("/register", [RegisterController::class, "register"])->name("register.submit");

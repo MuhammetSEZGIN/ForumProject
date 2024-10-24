@@ -7,7 +7,6 @@
         <div>{!! $article->content !!}</div>
         <x-comment-form :messages='$article'  ></x-comment-form>
     </x-slot>
-
 </x-layout>
 
 
