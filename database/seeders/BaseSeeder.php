@@ -30,13 +30,13 @@ class BaseSeeder extends Seeder
        User::factory(6)->create();
 
         DB::table("roles")->insert([
-            ["name" => "anonim","userID" => 0],
-            ["name" => "admin", "userID" => 1],
-            ["name" => "author", "userID" => 2],
+            ["name" => "anonim","userID" => 1],
+            ["name" => "admin", "userID" => 2],
             ["name" => "author", "userID" => 3],
             ["name" => "author", "userID" => 4],
             ["name" => "author", "userID" => 5],
             ["name" => "author", "userID" => 6],
+            ["name" => "author", "userID" => 7],
 
 
         ]);
