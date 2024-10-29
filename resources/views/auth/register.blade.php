@@ -1,4 +1,4 @@
-<x-layout>
+<x-layouts.layout>
     <x-slot name="navbar">
         <x-navbar/>
     </x-slot>
@@ -19,10 +19,10 @@
                     </div> <div class="row">
                         <div class="col-12">
                             <div data-mdb-input-init class="form-outline mb-4">
-                                <input type="text" id="form2Example1" name="email" class="form-control" value="{{old('name')}}" required />
+                                <input type="text" id="form2Example1" name="email" class="form-control" value="{{old('email')}}" required />
                                 <label class="form-label" for="form2Example1">E-mail</label>
                             </div>
-                            <x-error-text name="name"/>
+                            <x-error-text name="email"/>
                         </div>
                     </div> <div class="row">
                         <div class="col-12">
@@ -49,7 +49,7 @@
             </form>
     </x-slot>
 
-</x-layout>
+</x-layouts.layout>
 
 
 

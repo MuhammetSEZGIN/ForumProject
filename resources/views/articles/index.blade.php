@@ -1,4 +1,4 @@
-<x-layout>
+<x-layouts.layout>
     <x-slot name="navbar">
         <x-navbar></x-navbar>
     </x-slot>
@@ -6,7 +6,7 @@
         <h1>{{$header}}</h1>
         @foreach($articles as $article)
             <h2>{{$article->title}}</h2>
-            <p>{{ \Illuminate\Support\Str::limit($article->content, 300) }}
+            <p>{!! \Illuminate\Support\Str::limit($article->content, 300) !!} ...
                 <a href="{{ route('showArticle', ['id' => $article->articleID]) }}">Show Article</a>
             </p>
         @endforeach
@@ -14,4 +14,4 @@
             {{ $articles->links() }}
         </div>
     </x-slot>
-</x-layout>
+</x-layouts.layout>

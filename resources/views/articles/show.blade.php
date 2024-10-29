@@ -1,4 +1,4 @@
-<x-layout>
+<x-layouts.layout>
     <x-slot name="navbar">
         <x-navbar></x-navbar>
     </x-slot>
@@ -7,6 +7,6 @@
         <div>{!! $article->content !!}</div>
         <x-comment-form :messages='$article'  ></x-comment-form>
     </x-slot>
-</x-layout>
+</x-layouts.layout>
 
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\UserLogEnum;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Comment;
@@ -12,29 +13,36 @@ use App\Helpers\UserActionLogHelper;
 
 class ArticleController extends Controller
 {
+
+    /*
+     Ana sayfada makaleleri listeler.
+     */
     public function index()
     {
-        //$articles = Article::all();
-        $articles = Article::query()->where("isActive",1)->paginate(4);
-//        $articles = Article::query()->simplePaginate(2);
-
+       // pagine fonksiyonu sayfalama yaparken sayfa başına kaç tane makale gösterileceğini belirler.
+        $articles = Article::where("isActive",1)->paginate(4);
+//       $articles = Article::query()->simplePaginate(2);  // simplePaginate() fonksiyonu sayfalama yaparken sadece ileri ve geri butonları gösterir.
         return view('articles.index', [
             'articles' => $articles,
             'header'=> 'Ana Sayfa'
         ]);
     }
 
+    /*
+     * Son eklenen makaleleri listeler.
+     * */
     public function lastArticles()
     {
-
         $lastArticles = Article::query()->where("isActive",1)->orderBy('created_at', 'desc')->paginate(4);
-
         return view('articles.index', [
             'articles' => $lastArticles,
             'header'=> 'Son Eklenenler'
         ]);
     }
 
+    /*
+     * En çok okunan makaleleri listeler.
+     * */
     public function popularArticles()
     {
 
@@ -46,6 +54,9 @@ class ArticleController extends Controller
         ]);
     }
 
+    /*
+     * Seçilen id ye ait makalenin detaylarını article.show sayfasında gösterir.
+     * */
     public function findArticle($id)
     {
         $article = Article::with(['comments'=>function($query){
@@ -58,12 +69,19 @@ class ArticleController extends Controller
         ]);
     }
 
+    /*
+     * Makale eklenmesini sağlayacak sayfanın görüntülenmesi.
+     * */
     public function addArticleShow()
     {
         return view('articles.create', [
             'categories' => Category::all() ?? ["Kategori Yok"]
         ]);
     }
+
+    /*
+     * Makale eklemek için kullanılan fonksiyon.
+     * */
     public function addArticle(Request $request)
     {
         $validatedData = $request->validate([
@@ -81,8 +99,9 @@ class ArticleController extends Controller
         ]);
 
         if($newArticle){
+           // Katagori tablosu ile ilişkilendirme yapar.
             $newArticle->category()->attach($validatedData["categoryID"]);
-            userActionLogHelper::logAction("Yeni makale eklendi", $request->all());
+            userActionLogHelper::logAction(UserLogEnum::ARTICLE_ADD_SUCCESS, $request->all());
 
             return redirect("mainMenu");
         }else{
@@ -94,10 +113,12 @@ class ArticleController extends Controller
         }
     }
 
+    /*
+     * Kullanıcının eklediği makaleleri listeler. Sadece giriş yapmış kullanıcılar için çalışır.
+     * */
     public function myArticles(){
         $userId= Auth::id();
-        // $Articles = Article::query()->where('authorID',$userId);
-        if($userId){
+      if($userId){
             $articles = Article::query()->where('authorID',$userId)
             ->where('isActive',true)->get();
             return view('user.myArticles',[
@@ -109,6 +130,10 @@ class ArticleController extends Controller
 
 
     }
+
+    /*
+     * Kullanıcının eklediği makaleyi düzenlemesini sağlayacak sayfanın görüntülenmesi.
+     * */
     public function editArticleShow($id){
         $article= Article::query()->findOrFail($id);
         return view('articles.edit', [
@@ -117,6 +142,9 @@ class ArticleController extends Controller
         ]);
     }
 
+    /*
+     * Kullanıcının eklediği makaleyi düzenlemesi sağlanır.
+     * */
     public function editArticle(Request $request){
         $id=Auth::id();
         $validatedData = $request->validate([
@@ -135,6 +163,9 @@ class ArticleController extends Controller
         return redirect()->route('showArticle', ['id' => $id]);
     }
 
+    /*
+     * Kullanıcının eklediği makaleyi silmesini sağlar.
+     * */
     public function deleteArticle($id){
         $article=Article::query()->findOrFail($id);
         $article->isActive=false;

@@ -17,10 +17,12 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
     protected $fillable = [
         'name',
         'email',
         'password',
+        'roleID',
     ];
 
     /**
@@ -50,12 +52,23 @@ class User extends Authenticatable
     {
         return $this->hasMany(Article::class);
     }
-    public function roles()
+    public function role()
     {
-        return $this->hasMany(Role::class);
+        return $this->belongsTo(Role::class, "roleID", "id");
     }
     public function comments()
     {
         return $this->hasMany(Comment::class);
+    }
+
+    public function isAdmin(){
+        return $this->role()->where('name','admin')->exists();
+    }
+    public function isAuthor(){
+        return $this->role()->where('name','author')->exists();
+    }
+    public function userLogs()
+    {
+        return $this->hasMany(UserLog::class, "userID", "id");
     }
 }

@@ -1,4 +1,4 @@
-<x-layout>
+<x-layouts.layout>
     <x-slot name="navbar">
         <x-navbar/>
     </x-slot>
@@ -48,4 +48,4 @@
             </tbody>
         </table>
     </x-slot>
-</x-layout>
+</x-layouts.layout>

@@ -8,12 +8,16 @@ use App\Http\Middleware\UserLogs;
 use App\Mail\AuthReset;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
 
 Route::get('/test', function () {
     Mail::to('sezginmuhammet454@gmail.com')->send(new AuthReset());
     return "Mail Sent";
 });
 
+//Admin Routes
+Route::get("/index", [AdminController::class, "index"])->name("adminIndex");
+Route::get("/userLogs", [AdminController::class, "userLogs"])->name("userLogs");
 // Register Routes
 Route::post("/register", [RegisterController::class, "register"])->name("register.submit");
 Route::get("/register", [RegisterController::class, "index"])->name("register");
@@ -26,6 +30,12 @@ Route::post("/logout", [LoginController::class, "logout"])->name("logout");
 // Article Routes
 Route::get('/', [ArticleController::class, 'index'])->name('mainMenu');
 Route::get('/mainMenu', [ArticleController::class, 'index'])->name('mainMenu');
+
+/*Route::group([ 'middleware' => ['auth', 'is.admin'] ],
+    function()
+    {
+        Route::get('dashboard/admin', [DashboardController::class, 'admin'])->name('dashboard.admin');
+    });*/
 
 Route::get("/article/{id}", [ArticleController::class, "findArticle"])->name("showArticle");
 Route::get("/myarticle/{id}", [ArticleController::class, "editArticleShow"])->name("article.edit.show")->middleware("auth");
@@ -40,6 +50,6 @@ Route::get("/lastArticles", [ArticleController::class, "lastArticles"])->name("L
 
 // Comment Routes
 Route::post("/sendComment", [CommentController::class, "sendComment"])->name("sendComment");
-Route::get("/comments", [CommentController::class, "myComments"])->name("myComments")->middleware("auth");;
+Route::get("/comments", [CommentController::class, "myComments"])->name("myComments")->middleware("auth");
 Route::delete("/comment/delete/{id}", [CommentController::class, "deleteComment"])->name("deleteComment")->middleware("auth");;
 Route::patch("/approveComment/{id}", [CommentController::class, "approveComment"])->name("approveComment")->middleware("auth");;

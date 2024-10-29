@@ -10,9 +10,16 @@ use App\Helpers\UserActionLogHelper;
 
 class LoginController extends Controller{
 
+    /*
+     * Login sayfasını gösterir.
+     * */
     public function index(){
         return view('auth.login');
     }
+
+    /*
+     * Login işlemini yapar. Yazar ve admin girişleri yapılabilir.
+     * */
     public function login(Request $request)
     {
 
@@ -22,23 +29,36 @@ class LoginController extends Controller{
         ]);
 
         $control = Auth::attempt($validatedData);
-        if($control){
-            $request->session()->regenerate();
-            userActionLogHelper::logAction("Kullanici girisi", $request->all());
-            return redirect('mainMenu');
-       }else{
+
+        if(!$control){
             userActionLogHelper::logAction("Yanlis giris denemesi", $request->all());
             throw ValidationException::withMessages([
-               "name"=>"Kullanici adi ve şifre uyuşmuyor"
-           ]);
+                "name"=>"Kullanici adi ve şifre uyuşmuyor"
+            ]);
         }
+        $request->session()->regenerate();
 
+        if(Auth::user()->isAdmin()) {
+
+            userActionLogHelper::logAction("Admin girisi", $request->all());
+            return redirect()->route('adminIndex');
+        }
+        if (Auth::user()->isAuthor()) {
+            userActionLogHelper::logAction("Yazar girisi", $request->all());
+            return redirect('mainMenu');
+        }
+        return redirect('/');
 
     }
+
+    /*
+     * Çıkış işlemini yapar.
+     */
     public function logout()
     {
+        // başarı mesajları
         Auth::logout();
         userActionLogHelper::logAction("Kullanici cikisi", request()->all());
-        return redirect('login');
+        return redirect('login')->with('success', 'Başarıyla çıkış yaptınız');
     }
 }

@@ -5,24 +5,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UserLog extends Model
+class UserActionLog extends Model
 {
-
-    protected $table = "userlogs";
+    protected $table = "useractionlogs";
     use HasFactory;
 
     protected $guarded = [];
     protected function casts(){
         return
-        [
-            'created_at' => 'datetime',
-            'updated_at' => 'datetime',
-        ];
+            [
+                'created_at' => 'datetime',
+                'updated_at' => 'datetime',
+            ];
     }
 
     public function user()
     {
         return $this->belongsTo(User::class, "userID", "id");
     }
-
 }

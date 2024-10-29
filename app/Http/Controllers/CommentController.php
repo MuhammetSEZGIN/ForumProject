@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\UserActionLogHelper;
+use App\Helpers\UserLogEnum;
 use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\Comment;
@@ -13,6 +14,11 @@ use function PHPUnit\Framework\isEmpty;
 
 class CommentController extends Controller
 {
+
+    /*
+     * Yorum gönderme işlemi. Yorum gönderildikten sonra yorumun onaylanması gerekmektedir.
+     * Her kullanıcı yorum gönderebilir.
+     * */
     public function sendComment(Request $request){
 
         $request->validate([
@@ -32,12 +38,16 @@ class CommentController extends Controller
         ]);
         return redirect()->back();
     }
+
+    /*
+     * Yorum silme işlemi. Sadece yorumun yapıldığı makaleyi yazan kişi yorumu silebilir.
+     * */
     public function deleteComment($id){
 
         if(Comment::query()->findOrFail($id)->delete()) {
-            userActionLogHelper::logAction("Yorum silindi", request()->all());
+            userActionLogHelper::logAction(UserLogEnum::COMMENT_DELETE_SUCCESS, request()->all());
         }else{
-            userActionLogHelper::logAction("Yorum silinemedi", request()->all());
+            userActionLogHelper::logAction(UserLogEnum::ARTICLE_DELETE_FAIL, request()->all());
         }
         return redirect()->back();
     }
@@ -50,6 +60,10 @@ class CommentController extends Controller
         }
 
     }
+
+    /*
+     * Makaleye yapılan yorumların onaylanması işlemi.
+     * */
     public function approveComment($id){
         if(Comment::query()->findOrFail($id)->update([
             "isApproved"=>true,
@@ -61,6 +75,11 @@ class CommentController extends Controller
         }
         return redirect()->back();
     }
+
+
+    /*
+     * Kullanıcıya yapılan yorumların listelenmesi.
+     * */
     public function myComments(){
         $userID= Auth::id();
         if($userID){
@@ -74,8 +93,10 @@ class CommentController extends Controller
             ]
             );
         }
+
+        // middleware ile kontrol ediliyor ama burda yapsak da sorun yok.
         else{
-            // controller a auth eklenebilir mi bakacağım bu şekilde olmaz hep
+
             return redirect("login");
         }
     }

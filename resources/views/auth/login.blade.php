@@ -1,4 +1,4 @@
-<x-layout>
+<x-layouts.layout>
     <x-slot name="navbar">
         <x-navbar/>
     </x-slot>
@@ -30,9 +30,9 @@
                     </div>
                 </form>
             </div>
-            <div class="row">
 
-            </div>
         </div>
+
+        <x-toast message="test mesaj"/>
     </x-slot>
-</x-layout>
+</x-layouts.layout>

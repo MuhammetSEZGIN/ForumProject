@@ -19,6 +19,11 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
+
+    /*
+     * Pagination işlemlerinde bootstrap 5 kullanılması için
+     * Farklı bir tema kullanılacaksa ilgili tema için uygun olan paginator kullanılmalıdır.
+     * */
     public function boot(): void
     {
         Paginator::useBootstrapFive();
