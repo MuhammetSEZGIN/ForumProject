@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserActionLog extends Model
 {
-    protected $table = "useractionlogs";
+    protected $table = "userActionLogs";
     use HasFactory;
 
     protected $guarded = [];

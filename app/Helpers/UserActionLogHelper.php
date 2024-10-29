@@ -1,5 +1,6 @@
 <?php
 namespace App\Helpers;
+use App\Models\UserActionLog;
 use App\Models\UserLog;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Auth;
@@ -27,7 +28,7 @@ class UserActionLogHelper
         }
 
         // Kullanıcı loglarını tutmak için UserLog tablosuna kayıt atar.
-        UserLog::create([
+        UserActionLog::create([
             'userID' => Auth::check()? Auth::id():null,
             'action' => $action,
             'ip' => request()->ip(),

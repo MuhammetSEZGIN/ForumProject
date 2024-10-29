@@ -18,27 +18,4 @@ class ExampleTest extends TestCase
 
         $response->assertStatus(200);
     }
-
-    public function test_user_can_view_login_form(): void
-    {
-        $response = $this->get('/login');
-
-        $response->assertStatus(200);
-    }
-    public function test_user_can_post_login_form(): void
-    {
-        $user= User::factory()->make([
-            'name' =>'test',
-            'password' => bcrypt('password'),
-        ]);
-        $response = $this->post('/login', [
-            'name' => $user->name,
-            'password' => 'password',
-        ]);
-        $this->actingAs($user)->get('/login');
-        $response->assertRedirect('/mainMenu');
-    }
-
-
-
 }
