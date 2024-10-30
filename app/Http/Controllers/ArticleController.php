@@ -103,12 +103,11 @@ class ArticleController extends Controller
             $newArticle->category()->attach($validatedData["categoryID"]);
             userActionLogHelper::logAction(UserLogEnum::ARTICLE_ADD_SUCCESS, $request->all());
 
-            return redirect("mainMenu");
+            return redirect()->route('mainMenu')->with('success', UserLogEnum::ARTICLE_ADD_SUCCESS);
         }else{
-            userActionLogHelper::logAction("Makale eklenemedi", $validatedData);
+            userActionLogHelper::logAction(UserLogEnum::ARTICLE_ADD_FAIL, $validatedData);
             throw ValidationException::withMessages([
                 "title"=>"Article could not be created",
-
             ]);
         }
     }
@@ -125,7 +124,7 @@ class ArticleController extends Controller
                 'articles' => $articles,
             ]);
         }else{
-            return redirect("login");
+            return redirect()->route("login");
         }
 
 

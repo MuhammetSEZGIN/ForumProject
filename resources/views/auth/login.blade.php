@@ -19,7 +19,7 @@
                         <input type="password" id="form2Example2" name="password" class="form-control"  required />
                         <label class="form-label" for="form2Example2">Password</label>
                     </div>
-                    <x-error-text name="password"/>
+                    <x-error-text name="fail"/>
 
                     <!-- Submit button -->
                     <button type="submit" class="btn btn-primary w-100 " style="margin-bottom: 20px">Giriş Yap</button>

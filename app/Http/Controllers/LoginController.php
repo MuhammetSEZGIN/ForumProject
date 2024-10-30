@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Helpers\UserLogEnum;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -31,21 +32,21 @@ class LoginController extends Controller{
         $control = Auth::attempt($validatedData);
 
         if(!$control){
-            userActionLogHelper::logAction("Yanlis giris denemesi", $request->all());
+            userActionLogHelper::logAction(UserLogEnum::LOGIN_FAIL, $request->all());
             throw ValidationException::withMessages([
-                "name"=>"Kullanici adi ve şifre uyuşmuyor"
+                "fail"=>UserLogEnum::LOGIN_FAIL
             ]);
         }
         $request->session()->regenerate();
 
         if(Auth::user()->isAdmin()) {
 
-            userActionLogHelper::logAction("Admin girisi", $request->all());
-            return redirect()->route('adminIndex');
+            userActionLogHelper::logAction(UserLogEnum::LOGIN_ADMIN, $request->all());
+            return redirect()->route('adminIndex')->with('success', UserLogEnum::LOGIN_ADMIN);
         }
         if (Auth::user()->isAuthor()) {
-            userActionLogHelper::logAction("Yazar girisi", $request->all());
-            return redirect('mainMenu');
+            userActionLogHelper::logAction(UserLogEnum::LOGIN_SUCCESS, $request->all());
+            return redirect()->route('mainMenu')->with('success', UserLogEnum::LOGIN_SUCCESS);
         }
         return redirect('/');
 
@@ -57,8 +58,8 @@ class LoginController extends Controller{
     public function logout()
     {
         // başarı mesajları
+        userActionLogHelper::logAction(UserLogEnum::LOGOUT, request()->all());
         Auth::logout();
-        userActionLogHelper::logAction("Kullanici cikisi", request()->all());
-        return redirect('login')->with('success', 'Başarıyla çıkış yaptınız');
+        return redirect()->route('login')->with('success', UserLogEnum::LOGOUT);
     }
 }

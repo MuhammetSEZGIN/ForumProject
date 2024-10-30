@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Helpers\UserActionLogHelper;
+use App\Helpers\UserLogEnum;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -41,12 +42,12 @@ class RegisterController extends Controller
 
         // enum class ile kulalnıcı logları
         if($user){
-            UserActionLogHelper::logAction("Kullanici kaydi", $request->all());
+            UserActionLogHelper::logAction(UserLogEnum::REGISTER_SUCCESS, $request->all());
         }else{
-            UserActionLogHelper::logAction("Kullanici kaydi basarisiz", $request->all());
+            UserActionLogHelper::logAction(UserLogEnum::REGISTER_FAIL, $request->all());
         }
         Auth::login($user);
         // with success message
-        return redirect('mainMenu');
+        return redirect()->route('mainMenu')->with("success", UserLogEnum::REGISTER_SUCCESS);
     }
 }

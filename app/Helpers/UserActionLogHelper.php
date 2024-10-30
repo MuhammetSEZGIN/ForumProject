@@ -29,7 +29,7 @@ class UserActionLogHelper
 
         // Kullanıcı loglarını tutmak için UserLog tablosuna kayıt atar.
         UserActionLog::create([
-            'userID' => Auth::check()? Auth::id():null,
+            'userID' => Auth::check()? Auth::id():1,
             'action' => $action,
             'ip' => request()->ip(),
             'userAgent' => request()->userAgent(),

@@ -18,6 +18,7 @@ Route::get('/test', function () {
 //Admin Routes
 Route::get("/index", [AdminController::class, "index"])->name("adminIndex");
 Route::get("/userLogs", [AdminController::class, "userLogs"])->name("userLogs");
+
 // Register Routes
 Route::post("/register", [RegisterController::class, "register"])->name("register.submit");
 Route::get("/register", [RegisterController::class, "index"])->name("register");
@@ -31,25 +32,27 @@ Route::post("/logout", [LoginController::class, "logout"])->name("logout");
 Route::get('/', [ArticleController::class, 'index'])->name('mainMenu');
 Route::get('/mainMenu', [ArticleController::class, 'index'])->name('mainMenu');
 
-/*Route::group([ 'middleware' => ['auth', 'is.admin'] ],
+Route::group([ 'middleware' => ['auth'] ],
     function()
     {
-        Route::get('dashboard/admin', [DashboardController::class, 'admin'])->name('dashboard.admin');
-    });*/
+        Route::get("/myarticle/{id}", [ArticleController::class, "editArticleShow"])->name("article.edit.show");
+        Route::patch("/article/{id}", [ArticleController::class, "editArticle"])->name("editArticle");
+        Route::delete("/article/{id}", [ArticleController::class, "deleteArticle"])->name("deleteArticle");
+
+        Route::post("/addArticle", [ArticleController::class, "addArticle"])->name("addArticle.submit");
+        Route::get("/addArticle", [ArticleController::class, "addArticleShow"])->name("addArticle");
+        Route::get("/myArticles", [ArticleController::class, "myArticles"])->name("myArticles");
+
+        Route::delete("/comment/delete/{id}", [CommentController::class, "deleteComment"])->name("deleteComment");
+        Route::patch("/approveComment/{id}", [CommentController::class, "approveComment"])->name("approveComment");
+    });
 
 Route::get("/article/{id}", [ArticleController::class, "findArticle"])->name("showArticle");
-Route::get("/myarticle/{id}", [ArticleController::class, "editArticleShow"])->name("article.edit.show")->middleware("auth");
-Route::patch("/article/{id}", [ArticleController::class, "editArticle"])->name("editArticle")->middleware("auth");
-Route::delete("/article/{id}", [ArticleController::class, "deleteArticle"])->name("deleteArticle")->middleware("auth");;
 
-Route::post("/addArticle", [ArticleController::class, "addArticle"])->name("addArticle.submit")->middleware("auth");;
-Route::get("/addArticle", [ArticleController::class, "addArticleShow"])->name("addArticle")->middleware("auth");;
-Route::get("/myArticles", [ArticleController::class, "myArticles"])->name("myArticles")->middleware("auth");;
 Route::get("/popularArticles", [ArticleController::class, "popularArticles"])->name("PopularArticles");
 Route::get("/lastArticles", [ArticleController::class, "lastArticles"])->name("LastArticles");
 
 // Comment Routes
 Route::post("/sendComment", [CommentController::class, "sendComment"])->name("sendComment");
 Route::get("/comments", [CommentController::class, "myComments"])->name("myComments")->middleware("auth");
-Route::delete("/comment/delete/{id}", [CommentController::class, "deleteComment"])->name("deleteComment")->middleware("auth");;
-Route::patch("/approveComment/{id}", [CommentController::class, "approveComment"])->name("approveComment")->middleware("auth");;
+
