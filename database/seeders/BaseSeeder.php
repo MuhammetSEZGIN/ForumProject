@@ -24,17 +24,6 @@ class BaseSeeder extends Seeder
     }
     public function run(): void
     {
-        DB::table("roles")->insert([
-            ["name" => "author", "created_at" => now(), "updated_at" => now()],
-            ["name" => "admin", "created_at" => now(), "updated_at" => now()],
-            ["name" => "anonim", "created_at" => now(), "updated_at" => now()],
-        ]);
-        User::query()->create(
-            ["name"=>"anonim", "email"=>"anonim@gmail.com", "password"=>"qwe", "created_at"=>now(), "updated_at"=>now(), "roleID"=>3],
-        );
-        User::query()->create(
-            ["name"=>"admin", "email"=>"admin@admin.com", "password"=>"qwe", "created_at"=>now(), "updated_at"=>now(), "roleID"=>2],
-        );
        User::factory(6)->create();
 
         DB::table("categories")->insert([

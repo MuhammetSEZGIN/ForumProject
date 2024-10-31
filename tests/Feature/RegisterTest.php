@@ -22,9 +22,11 @@ class RegisterTest extends TestCase
 
     public function test_user_can_register_with_correct_information(): void
     {
+
         $user= User::factory()->make([
             'name' =>'test',
             'password' => bcrypt('password'),
+            'RoleID' => Role::where('name','author')->first()->id,
         ]);
         $response = $this->post('/register', [
             'name' => $user->name,
@@ -53,6 +55,6 @@ class RegisterTest extends TestCase
             'RoleID' => Role::where('name','author')->first()->id,
         ]);
         $response->assertInValid([ 'email']);
-        /* $response->assertSessionHasErrors(['email'])->assertStatus(302);*/
+        $response->assertSessionHasErrors(['email'])->assertStatus(302);
     }
 }

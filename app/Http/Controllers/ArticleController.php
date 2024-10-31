@@ -103,7 +103,7 @@ class ArticleController extends Controller
             $newArticle->category()->attach($validatedData["categoryID"]);
             userActionLogHelper::logAction(UserLogEnum::ARTICLE_ADD_SUCCESS, $request->all());
 
-            return redirect()->route('mainMenu')->with('success', UserLogEnum::ARTICLE_ADD_SUCCESS);
+            return redirect()->route('showArticle', $newArticle->articleID)->with('success', UserLogEnum::ARTICLE_ADD_SUCCESS);
         }else{
             userActionLogHelper::logAction(UserLogEnum::ARTICLE_ADD_FAIL, $validatedData);
             throw ValidationException::withMessages([
@@ -144,8 +144,7 @@ class ArticleController extends Controller
     /*
      * Kullanıcının eklediği makaleyi düzenlemesi sağlanır.
      * */
-    public function editArticle(Request $request){
-        $id=Auth::id();
+    public function editArticle(Request $request, $id){
         $validatedData = $request->validate([
             "title"=>"required",
             "text"=>"required",
@@ -153,13 +152,14 @@ class ArticleController extends Controller
         ]);
 
         $updatedArticle=Article::query()->findOrFail($id);
+
         $updatedArticle->update([
             "title"=>$validatedData["title"],
             "content"=>$validatedData["text"],
         ]);
         $updatedArticle->category()->attach($validatedData["categoryID"]);
-        UserActionLogHelper::logAction("Makale guncellendi", $request->all());
-        return redirect()->route('showArticle', ['id' => $id]);
+        UserActionLogHelper::logAction(UserLogEnum::ARTICLE_UPDATE_SUCCESS, $request->all());
+        return redirect()->route('showArticle', ['id' => $id])->with('success', UserLogEnum::ARTICLE_UPDATE_SUCCESS);
     }
 
     /*

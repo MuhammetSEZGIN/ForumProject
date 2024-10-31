@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Role;
+use App\Models\User;
 use App\Models\UserLog;
 use Closure;
 use Illuminate\Http\Request;
@@ -34,7 +36,16 @@ class UserLogs
         if(isset($postData['password_confirmation'])){
             $postData['password_confirmation']='***';
         }
-
+        /*
+        if(Auth::id()==null){
+            $role=Role::firstOrCreate(['name' => 'anonim',]);
+            $user= User::factory()->firstOrCreate([
+                'id'=>1,
+                'name' =>'anonim',
+                'password' => bcrypt('password'),
+                'roleID' => $role->id,
+            ]);
+        }*/
         UserLog::create([
             'userID' => Auth::check()? Auth::id():1,
             'ip'=>$request->ip(),

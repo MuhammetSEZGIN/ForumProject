@@ -25,9 +25,9 @@ class CommentController extends Controller
             'content' => 'required|string|max:255',
             'articleID' => 'required|integer',
         ]);
-        $userID = (int)($request->get('userID')) ?? 0;
+        $userID = (int)($request->get('userID') ?? 1);
 
-        Comment::query()->insert([
+        $result=Comment::insert([
             "articleID"=>$request->get('articleID'),
             "userID" => $userID,
             "content"=>$request->get('content'),
@@ -36,7 +36,11 @@ class CommentController extends Controller
             "updated_at"=>now(),
 
         ]);
-        return redirect()->back();
+        if($result) {
+            userActionLogHelper::logAction(UserLogEnum::COMMENT_ADD_SUCCESS, request()->all());
+            return redirect(route('showArticle',$request->get('articleID') ))->with('success', UserLogEnum::COMMENT_ADD_SUCCESS);
+        }
+        return redirect(route('showArticle',$request->get('articleID') ))->with('fail', UserLogEnum::COMMENT_ADD_FAIL);
     }
 
     /*
@@ -46,10 +50,12 @@ class CommentController extends Controller
 
         if(Comment::query()->findOrFail($id)->delete()) {
             userActionLogHelper::logAction(UserLogEnum::COMMENT_DELETE_SUCCESS, request()->all());
+            return redirect(route('myComments'))->with('success', UserLogEnum::COMMENT_DELETE_SUCCESS);
         }else{
             userActionLogHelper::logAction(UserLogEnum::ARTICLE_DELETE_FAIL, request()->all());
+            return redirect(route('myComments'))->with('fail', UserLogEnum::COMMENT_DELETE_FAIL);
         }
-        return redirect()->back();
+
     }
     public function getComments(){
         $userID= Auth::id();
@@ -73,7 +79,7 @@ class CommentController extends Controller
         {
             userActionLogHelper::logAction("Yorum onaylanamadı", request()->all());
         }
-        return redirect()->back();
+        return redirect(route('myComments'))->with('success', UserLogEnum::COMMENT_CONFIRM_SUCCESS);
     }
 
 
@@ -96,7 +102,6 @@ class CommentController extends Controller
 
         // middleware ile kontrol ediliyor ama burda yapsak da sorun yok.
         else{
-
             return redirect("login");
         }
     }

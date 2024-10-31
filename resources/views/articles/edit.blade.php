@@ -42,6 +42,7 @@
                         <x-error-text name="title"></x-error-text>
                         <textarea name="text" style="display:none" id="hiddenArea"></textarea>
                     </div>
+
                     <div class="col d-flex justify-content-end">
                         <x-modal-button class="btn btn-success">
                             <x-slot name="modalTitleText">Save</x-slot>

@@ -31,44 +31,89 @@ class ArticleTest extends TestCase
 
     public function test_guest_user_can_view_article(): void
     {
-        $response = $this->get('/article/1');
-        $response->assertStatus(200); // 200 Durum Kodu (Başarılı)
+        $article = Article::factory()->create();
+        $response = $this->get(route('showArticle', $article->articleID));
+        $response->assertStatus(200);
         $response->assertViewIs('articles.show');
     }
 
+    public function test_author_can_see_add_article_form(): void
+    {
+        $user = User::factory()->create();
+        $category = Category::factory()->create();
+        $response = $this->actingAs($user)->get(route('addArticle'),
+        [
+            'categories' => Category::all() ?? "Kategori Yok",
+        ]
+        );
+        $response->assertStatus(200);
+    }
     public function test_user_can_post_article(): void
     {
-
+        $article = Article::factory()->make();
         $user = User::factory()->create();
-        $article= Article::factory()->make()->toArray();
-        $response = $this->actingAs($user)->post('/article', $article );
+        $category = Category::factory()->create();
+        $response = $this->actingAs($user)->post(route('addArticle'),[
+            'title' => $article->title,
+            'text' => $article->content,
+            'categoryID' => $category->CategoryID,
+        ]);
         $response->assertValid();
-        $this->assertDatabaseHas('articles', $article);
-        $response->assertRedirect('/mainMenu');
+        $this->assertDatabaseHas('articles', [
+            'title' => $article->title,
+            'content' => $article->content,
+        ]);
+        $addedArticle= Article::where('title', $article->title)->first();
+        $response->assertRedirect(route('showArticle', [$addedArticle->articleID]));
         $response->assertSessionHas('success', UserLogEnum::ARTICLE_ADD_SUCCESS);
 
     }
-    public function test_user_can_add_an_article_a_category(): void
+
+    public function test_author_can_see_edit_article_form(): void
     {
-        /*
-         * User, category ve article factorylerini kullanarak veritabanına test verileri eklenir.
-         * Article ve category tabloları arasında many-to-many ilişkisi olduğu için article__category tablosuna da veri eklenir.
-         * */
-        $user = User::factory()->create();
         $article= Article::factory()->create();
+        $category = Category::factory()->create();
+        $article->category()->attach($category->CategoryID);
 
-        $response = $this->actingAs($user)->post('/article', $article->toArray());
+        $response = $this->actingAs($article->user)->get(route('article.edit.show', $article->articleID),
+        [
+            'categories' => Category::all() ?? "Kategori Yok",
+        ]
+        );
+        $response->assertStatus(200);
 
-        $category1 = Category::factory()->create();
-        $article->category()->attach($category1->categoryID);
-
-
-        $response->assertRedirect('/mainMenu');
-        $this->assertDatabaseHas('article__category', [
-            'articleID' => 1,
-            'categoryID' => 2,
-        ]);
     }
+
+
+    public function test_author_can_edit_article(): void
+    {
+        $article= Article::factory()->create();
+        $category = Category::factory()->create();
+
+        $response = $this->actingAs($article->user)->patch(route('editArticle', $article->articleID),[
+            'title' => $article->title,
+            'text' => $article->content,
+            'categoryID' => $category->CategoryID,
+        ]);
+        $response->assertValid();
+        $response->assertSessionHas('success', UserLogEnum::ARTICLE_UPDATE_SUCCESS);
+        $response->assertRedirect(route('showArticle', [$article->articleID]));
+    }
+
+    /*
+     * AssertStatus 302 vermemize gerek var mı ?
+     * Çünkü devamında  $response->assertRedirect('myArticles'); ile yönlendirme yapıyoruz.
+     * */
+    public function test_author_can_delete_article(): void
+    {
+
+        $article= Article::factory()->create();
+        $category = Category::factory()->create();
+        $article->category()->attach($category->CategoryID);
+        $response = $this->actingAs($article->user)->delete(route('deleteArticle', $article->articleID))->assertStatus(302);
+        $response->assertRedirect('myArticles');
+    }
+
     public function test_categories_in_database_cannot_be_empty() : void
     {
         $this->assertNotEmpty(Category::all());
