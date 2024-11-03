@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-
+  workflow_dispatch:
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -26,4 +26,4 @@ jobs:
           HOST: ${{ secrets.EC2_HOST }}
           USERNAME: ${{ secrets.EC2_USERNAME }}
         run: |
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa $USERNAME@$HOST "cd /path/to/your/laravel/project && git pull origin main"
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa $USERNAME@$HOST "cd /var/www/html && git pull origin main"
