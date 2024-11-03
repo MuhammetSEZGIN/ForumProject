@@ -13,12 +13,17 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Deploy to EC2
+      - name: Set up SSH key
         env:
           SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+      - name: Deploy to EC2
+        env:
           HOST: ${{ secrets.EC2_HOST }}
           USERNAME: ${{ secrets.EC2_USERNAME }}
         run: |
-          ssh -i "$SSH_KEY" $USERNAME@$HOST "cd /path/to/your/laravel/project && git pull origin main"
-
-### 4.2.2. GitHub Actions for Laravel
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa $USERNAME@$HOST "cd /path/to/your/laravel/project && git pull origin main"
