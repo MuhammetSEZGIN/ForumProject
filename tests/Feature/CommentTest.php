@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 use App\Helpers\UserLogEnum;
 use App\Models\Article;
+use App\Models\Comment;
+use App\Models\ReportedComment;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -28,6 +30,7 @@ class CommentTest extends TestCase
         $response->assertSessionHas('success', UserLogEnum::COMMENT_ADD_SUCCESS);
 
     }
+
     public function test_guest_cannot_delete_comments()
     {
         $article = Article::factory()->create();
@@ -47,7 +50,8 @@ class CommentTest extends TestCase
         ]);
     }
 
-    public function test_author_can_see_comments_that_belongs_to_his_articles(){
+    public function test_author_can_see_comments_that_belongs_to_his_articles()
+    {
         $article = Article::factory()->create();
         $userThatCommented = User::factory()->create();
         $comment = $article->comments()->create([
@@ -57,7 +61,9 @@ class CommentTest extends TestCase
         $response = $this->actingAs($article->user)->get(route('myComments'));
         $response->assertStatus(200);
     }
-    public function test_author_can_confirm_articles_comments(){
+
+    public function test_author_can_confirm_articles_comments()
+    {
         $article = Article::factory()->create();
         $userThatCommented = User::factory()->create();
         $comment = $article->comments()->create([
@@ -75,7 +81,8 @@ class CommentTest extends TestCase
         ]);
     }
 
-    public function test_author_can_delete_articles_comments(){
+    public function test_author_can_delete_articles_comments()
+    {
         // factoryde  makale için user oluşur
         $article = Article::factory()->create();
         $userThatCommented = User::factory()->create();
@@ -92,5 +99,34 @@ class CommentTest extends TestCase
             'commentID' => $comment->commentID,
             'content' => 'This is a comment',
         ]);
+    }
+
+    public function test_user_can_report_comments()
+    {
+        $article = Article::factory()->create();
+        $userThatCommented = User::factory()->create();
+        $comment = $article->comments()->create([
+            'userID' => $userThatCommented->id,
+            'content' => 'This is a comment',
+        ]);
+
+        /*
+        article user kullanıyorum çünkü factory de ayrı bir user oluşturuluyor
+         tekrardan oluşturmak istemedim
+       */
+        $response = $this->actingAs($article->user)->post(route('reportComment', $comment->commentID),
+            [
+                'commentID' => $comment->commentID,
+                'userID' => $article->user->id,
+                'reason' => 'This is a reason',
+            ]
+        );
+        $response->assertValid();
+        $response->assertSessionHas('success', UserLogEnum::COMMENT_REPORT_SUCCESS);
+        $response->assertRedirect(route('showArticle', $article->articleID));
+        $reportedComment = ReportedComment::where('commentID', $comment->commentID)
+            ->where('userID', $article->user->id)
+            ->first();
+        $this->assertNotNull($reportedComment);
     }
 }

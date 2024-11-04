@@ -18,6 +18,11 @@ Route::get('/test', function () {
 //Admin Routes
 Route::get("/index", [AdminController::class, "index"])->name("adminIndex");
 Route::get("/userLogs", [AdminController::class, "userLogs"])->name("userLogs");
+Route::delete("/userLogs/delete/{id}", [AdminController::class, "userLogsDelete"])->name("userLogsDelete");
+Route::delete("/userLogs/deleteAll", [AdminController::class, "userLogsDeleteAll"])->name("userLogsDeleteAll");
+
+Route::get("/allUsers", [AdminController::class, "all,Users"])->name("allUsers");
+Route::delete("/user/delete/{id}", [AdminController::class, "userDelete"])->name("userDelete");
 
 // Register Routes
 Route::post("/register", [RegisterController::class, "register"])->name("register.submit");
@@ -55,4 +60,4 @@ Route::get("/lastArticles", [ArticleController::class, "lastArticles"])->name("L
 // Comment Routes
 Route::post("/sendComment", [CommentController::class, "sendComment"])->name("sendComment");
 Route::get("/comments", [CommentController::class, "myComments"])->name("myComments")->middleware("auth");
-
+Route::post("/reportComment/{id}", [CommentController::class, "reportComment"])->name("reportComment");

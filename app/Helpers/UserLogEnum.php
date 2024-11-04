@@ -28,8 +28,15 @@ enum UserLogEnum: string
 
     case COMMENT_CONFIRM_FAIL = "Yorum Onaylama Basarisiz";
 
+    case COMMENT_REPORT_SUCCESS = "Yorum Sikayet Edildi";
+
+    case COMMENT_REPORT_FAIL = "Yorum Sikayet Etme Basarisiz";
+
     case COMMENT_DELETE_SUCCESS = "Yorum Silindi";
 
     case COMMENT_DELETE_FAIL = "Yorum Silme Basarisiz";
+
+
+
 
 }

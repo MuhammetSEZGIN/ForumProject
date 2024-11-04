@@ -7,6 +7,7 @@ use App\Helpers\UserLogEnum;
 use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\Comment;
+use App\Models\ReportedComment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
@@ -57,6 +58,11 @@ class CommentController extends Controller
         }
 
     }
+
+    /*
+     * Kullanıcıların yaptığı yorumların listelenmesi
+     * */
+
     public function getComments(){
         $userID= Auth::id();
         if($userID){
@@ -102,6 +108,31 @@ class CommentController extends Controller
 
         // middleware ile kontrol ediliyor ama burda yapsak da sorun yok.
         else{
+            return redirect("login");
+        }
+    }
+
+    /*
+     * Yorumun şikayet edilmesi işlemi.
+     * Request in yanına articleId eklenebilir mi
+     *
+     * */
+    public function reportComment($id, Request $request){
+        $userID= Auth::id();
+        if($userID){
+            $result=ReportedComment::create([
+                "commentID"=>$id,
+                "userID" => $userID,
+                "reason"=>$request->get('reason'),
+                "created_at"=> now(),
+                "updated_at"=>now(),
+            ]);
+            if($result) {
+                userActionLogHelper::logAction(UserLogEnum::COMMENT_REPORT_SUCCESS, request()->all());
+                return redirect(route('showArticle',$request['articleID'] ))->with('success', UserLogEnum::COMMENT_REPORT_SUCCESS);
+            }
+            return redirect(route('showArticle',$request->get('articleID') ))->with('fail', UserLogEnum::COMMENT_REPORT_FAIL);
+        }else{
             return redirect("login");
         }
     }

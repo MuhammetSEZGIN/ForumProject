@@ -71,4 +71,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserLog::class, "userID", "id");
     }
+
+    public function reportedComments()
+    {
+        return $this->hasMany(ReportedComment::class, 'userID', 'commentID');
+    }
 }

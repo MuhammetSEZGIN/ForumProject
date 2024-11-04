@@ -25,4 +25,11 @@ class Article extends Model
         return $this->hasMany(Comment::class, "articleID", "articleID");
     }
 
+    /*
+     * Kötü isimlendirme. ArticleReport olmalıydı.
+     * */
+    public function reportedArticle()
+    {
+        return $this->hasMany(ReportedArticle::class, "articleID", "articleID");
+    }
 }

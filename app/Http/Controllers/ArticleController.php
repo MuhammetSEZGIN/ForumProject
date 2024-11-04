@@ -175,4 +175,6 @@ class ArticleController extends Controller
         }
         return redirect('myArticles');
     }
+
+
 }

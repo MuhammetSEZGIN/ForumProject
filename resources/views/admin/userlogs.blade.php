@@ -14,7 +14,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($userlogs as $log)
+                        @foreach($userLogs as $log)
                         <tr>
                             <td>{{ $log->id }}</td>
 
