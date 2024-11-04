@@ -30,4 +30,4 @@ jobs:
           HOST: ${{ secrets.EC2_HOST }}
         run: |
           echo "Connecting to $USERNAME@$HOST"
-          ssh -i ~/.ssh/id_rsa $USERNAME@$HOST 'cd /var/www/html/ForumProject && git pull origin main'
+          ssh -i ~/.ssh/id_rsa $USERNAME@$HOST 'cd /var/www/html/ForumProject && git pull origin main && git reset --hard origin/main'
