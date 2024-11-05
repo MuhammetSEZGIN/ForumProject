@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\RegisterController;
@@ -20,9 +21,13 @@ Route::get("/index", [AdminController::class, "index"])->name("adminIndex");
 Route::get("/userLogs", [AdminController::class, "userLogs"])->name("userLogs");
 Route::delete("/userLogs/delete/{id}", [AdminController::class, "userLogsDelete"])->name("userLogsDelete");
 Route::delete("/userLogs/deleteAll", [AdminController::class, "userLogsDeleteAll"])->name("userLogsDeleteAll");
-
-Route::get("/allUsers", [AdminController::class, "all,Users"])->name("allUsers");
 Route::delete("/user/delete/{id}", [AdminController::class, "userDelete"])->name("userDelete");
+Route::get("/allUsers", [AdminController::class, "allUsers"])->name("allUsers");
+
+Route::get("/reportedComments", [AdminController::class, "reportedComments"])->name("reportedComments");
+Route::get("reportedArticles ", [AdminController::class, "reportedArticles"])->name("reportedArticles");
+Route::delete("/comment/delete/{id}", [AdminController::class, "commentDelete"])->name("commentsDelete");
+Route::delete("/article/delete/{id}", [AdminController::class, "articleDelete"])->name("articleDelete");
 
 // Register Routes
 Route::post("/register", [RegisterController::class, "register"])->name("register.submit");
@@ -61,3 +66,10 @@ Route::get("/lastArticles", [ArticleController::class, "lastArticles"])->name("L
 Route::post("/sendComment", [CommentController::class, "sendComment"])->name("sendComment");
 Route::get("/comments", [CommentController::class, "myComments"])->name("myComments")->middleware("auth");
 Route::post("/reportComment/{id}", [CommentController::class, "reportComment"])->name("reportComment");
+Route::post("/reportArticle/{id}", [ArticleController::class, "reportArticle"])->name("reportArticle");
+
+
+Route::get("/test",[FileController::class, "test"])->name("test");
+
+
+

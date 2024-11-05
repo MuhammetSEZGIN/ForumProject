@@ -66,7 +66,7 @@ class CommentController extends Controller
     public function getComments(){
         $userID= Auth::id();
         if($userID){
-            return Comment::query()->where('userID',$userID)->get();
+            return Comment::where('userID',$userID)->get();
         }else{
             return redirect("login");
         }
@@ -77,7 +77,7 @@ class CommentController extends Controller
      * Makaleye yapılan yorumların onaylanması işlemi.
      * */
     public function approveComment($id){
-        if(Comment::query()->findOrFail($id)->update([
+        if(Comment::findOrFail($id)->update([
             "isApproved"=>true,
         ])){
             userActionLogHelper::logAction("Yorum onaylandı", request()->all());
@@ -96,8 +96,8 @@ class CommentController extends Controller
         $userID= Auth::id();
         if($userID){
 
-            $articles=Article::query()->where('authorID',$userID)->get();
-            $comments=Comment::query()->whereIn('articleID',$articles->pluck('articleID'))->get();
+            $articles=Article::where('authorID',$userID)->get();
+            $comments=Comment::whereIn('articleID',$articles->pluck('articleID'))->get();
 
             return view("user.comments",
             [
@@ -117,21 +117,21 @@ class CommentController extends Controller
      * Request in yanına articleId eklenebilir mi
      *
      * */
-    public function reportComment($id, Request $request){
+    public function reportComment($id){
         $userID= Auth::id();
         if($userID){
             $result=ReportedComment::create([
                 "commentID"=>$id,
                 "userID" => $userID,
-                "reason"=>$request->get('reason'),
+                "reason"=>request()['reason'],
                 "created_at"=> now(),
                 "updated_at"=>now(),
             ]);
             if($result) {
                 userActionLogHelper::logAction(UserLogEnum::COMMENT_REPORT_SUCCESS, request()->all());
-                return redirect(route('showArticle',$request['articleID'] ))->with('success', UserLogEnum::COMMENT_REPORT_SUCCESS);
+                return redirect(route('showArticle',request()['articleID'] ))->with('success', UserLogEnum::COMMENT_REPORT_SUCCESS);
             }
-            return redirect(route('showArticle',$request->get('articleID') ))->with('fail', UserLogEnum::COMMENT_REPORT_FAIL);
+            return redirect(route('showArticle',request()['articleID' ]))->with('fail', UserLogEnum::COMMENT_REPORT_FAIL);
         }else{
             return redirect("login");
         }

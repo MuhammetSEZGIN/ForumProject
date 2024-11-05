@@ -6,6 +6,7 @@ use App\Helpers\UserLogEnum;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Comment;
+use App\Models\ReportedArticle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
@@ -21,7 +22,8 @@ class ArticleController extends Controller
     {
        // pagine fonksiyonu sayfalama yaparken sayfa başına kaç tane makale gösterileceğini belirler.
         $articles = Article::where("isActive",1)->paginate(4);
-//       $articles = Article::query()->simplePaginate(2);  // simplePaginate() fonksiyonu sayfalama yaparken sadece ileri ve geri butonları gösterir.
+//       $articles = Article::query()->simplePaginate(2);
+//       simplePaginate() fonksiyonu sayfalama yaparken sadece ileri ve geri butonları gösterir.
         return view('articles.index', [
             'articles' => $articles,
             'header'=> 'Ana Sayfa'
@@ -33,7 +35,7 @@ class ArticleController extends Controller
      * */
     public function lastArticles()
     {
-        $lastArticles = Article::query()->where("isActive",1)->orderBy('created_at', 'desc')->paginate(4);
+        $lastArticles = Article::where("isActive",1)->orderBy('created_at', 'desc')->paginate(4);
         return view('articles.index', [
             'articles' => $lastArticles,
             'header'=> 'Son Eklenenler'
@@ -46,7 +48,8 @@ class ArticleController extends Controller
     public function popularArticles()
     {
 
-        $popularArticles= Article::query()->where("isActive",1)->orderBy('viewCount', 'desc')->paginate(4);
+        $popularArticles= Article::query()->where("isActive",1)
+            ->orderBy('viewCount', 'desc')->paginate(4);
 
         return view('articles.index', [
             'articles' => $popularArticles,
@@ -103,7 +106,8 @@ class ArticleController extends Controller
             $newArticle->category()->attach($validatedData["categoryID"]);
             userActionLogHelper::logAction(UserLogEnum::ARTICLE_ADD_SUCCESS, $request->all());
 
-            return redirect()->route('showArticle', $newArticle->articleID)->with('success', UserLogEnum::ARTICLE_ADD_SUCCESS);
+            return redirect()->route('showArticle', $newArticle->articleID)
+                ->with('success', UserLogEnum::ARTICLE_ADD_SUCCESS);
         }else{
             userActionLogHelper::logAction(UserLogEnum::ARTICLE_ADD_FAIL, $validatedData);
             throw ValidationException::withMessages([
@@ -159,7 +163,8 @@ class ArticleController extends Controller
         ]);
         $updatedArticle->category()->attach($validatedData["categoryID"]);
         UserActionLogHelper::logAction(UserLogEnum::ARTICLE_UPDATE_SUCCESS, $request->all());
-        return redirect()->route('showArticle', ['id' => $id])->with('success', UserLogEnum::ARTICLE_UPDATE_SUCCESS);
+        return redirect()->route('showArticle', ['id' => $id])
+            ->with('success', UserLogEnum::ARTICLE_UPDATE_SUCCESS);
     }
 
     /*
@@ -174,6 +179,37 @@ class ArticleController extends Controller
             UserActionLogHelper::logAction("Makale silinemedi", request()->all());
         }
         return redirect('myArticles');
+    }
+
+    /*
+     * Kullanıcılar eklenen makaleleri şikayet edebilir
+     * */
+    public function reportArticle( $id){
+        $article=Article::findOrFail($id);
+        $validatedData = request()->validate([
+            "reason"=>"required",
+        ]);
+
+        if($article){
+            ReportedArticle::create([
+                'articleID'=>$id,
+                'userID'=>Auth::id(),
+                'reason'=>$validatedData['reason'],
+            ]);
+            UserActionLogHelper::logAction(UserLogEnum::ARTICLE_REPORT_SUCCESS, request()->all());
+            return redirect()->route('showArticle', ['id' => $id])
+                ->with('success', UserLogEnum::ARTICLE_REPORT_SUCCESS);
+        }else{
+            UserActionLogHelper::logAction(UserLogEnum::ARTICLE_REPORT_FAIL, request()->all());
+
+            /*
+             * comment report daki fonksiyonda return redirect()->route('showArticle', ['id' => $id])->with('fail', UserLogEnum::ARTICLE_REPORT_FAIL);
+             * şeklinde bir kullanım var. Bu kullanımı burada da yapabilirdik.
+             * */
+            throw ValidationException::withMessages([
+                "fail"=>UserLogEnum::ARTICLE_REPORT_FAIL,
+            ]);
+        }
     }
 
 

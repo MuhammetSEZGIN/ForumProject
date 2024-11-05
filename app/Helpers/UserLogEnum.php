@@ -21,6 +21,9 @@ enum UserLogEnum: string
 
     case ARTICLE_DELETE_FAIL = "Makale Silme Basarisiz";
 
+    case ARTICLE_REPORT_SUCCESS = "Makale Sikayet Edildi";
+
+    case ARTICLE_REPORT_FAIL = "Makale Sikayet Etme Basarisiz";
     case COMMENT_ADD_SUCCESS = "Yorum Eklendi, Onay Bekliyor";
 
     case COMMENT_ADD_FAIL = "Yorum Ekleme Basarisiz";

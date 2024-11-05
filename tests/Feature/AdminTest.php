@@ -120,6 +120,7 @@ class AdminTest extends TestCase
         $response->assertSessionHas('success', AdminMessageEnum::USER_DELETE_SUCCESS);
     }
 
+
     protected function getAdmin()
     {
         return User::where('name', self::ADMIN_NAME)->where('id', self::ADMIN_ID)->first();

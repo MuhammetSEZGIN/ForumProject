@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Helpers\UserLogEnum;
 use App\Models\Article;
 use App\Models\Category;
+use App\Models\ReportedArticle;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -114,6 +115,22 @@ class ArticleTest extends TestCase
         $response->assertRedirect('myArticles');
     }
 
+    public function test_user_can_report_article(): void
+    {
+        $article= Article::factory()->create();
+        $user = User::factory()->create();
+        $response = $this->actingAs($user)->post(route('reportArticle', $article->articleID),[
+            'reason' => 'Spam',
+            'userID' => $user->id,
+        ]);
+        $response->assertValid();
+        $response->assertSessionHas('success', UserLogEnum::ARTICLE_REPORT_SUCCESS);
+        $response->assertRedirect(route('showArticle', $article->articleID));
+        $reportedArticle = ReportedArticle::where('userID', $user->id)
+            ->where('reason', 'Spam')
+            ->first();
+        $this->assertNotNull($reportedArticle);
+    }
     public function test_categories_in_database_cannot_be_empty() : void
     {
         $this->assertNotEmpty(Category::all());

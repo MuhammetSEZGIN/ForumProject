@@ -29,6 +29,15 @@ return [
     */
 
     'disks' => [
+        'ftp'=>[
+            'driver' => 'ftp',
+            'host' => env('FTP_HOST'),
+            'port' => (int)env('FTP_PORT'),
+            'username' => env('FTP_USERNAME'),
+            'password' => env('FTP_PASSWORD'),
+            'root' => env('FTP_ROOT_PATH', '/'),
+            'ssl' => true,
+        ],
 
         'local' => [
             'driver' => 'local',
@@ -56,6 +65,8 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'throw' => false,
         ],
+
+
 
     ],
 

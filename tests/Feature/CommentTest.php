@@ -116,6 +116,7 @@ class CommentTest extends TestCase
        */
         $response = $this->actingAs($article->user)->post(route('reportComment', $comment->commentID),
             [
+                'articleID' => $article->articleID,
                 'commentID' => $comment->commentID,
                 'userID' => $article->user->id,
                 'reason' => 'This is a reason',

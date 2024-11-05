@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 
 use App\Helpers\AdminMessageEnum;
 use App\Http\Controllers\Controller;
+use App\Models\Article;
 use App\Models\Comment;
+use App\Models\ReportedComment;
 use App\Models\User;
 use App\Models\UserLog;
 use http\Message;
@@ -52,7 +54,7 @@ class AdminController extends Controller
 
     public function allUsers()
     {
-        $users = User::with('role')->select('id', 'name', 'email', 'created_at')->get();
+        $users = User::all();
         return redirect()->route('allUsers', ['users' => $users])->
         with('success', AdminMessageEnum::VIEW_ALL_USERS);
     }
@@ -69,15 +71,30 @@ class AdminController extends Controller
         with('error', AdminMessageEnum::USER_DELETE_FAIL);
     }
 
+    public function reportedComments()
+    {
+        $comments = ReportedComment::with('user')->with('comment')->get();
+        return view('admin.reportedComments', ['comments' => $comments]);
+    }
 
-
+    public function articleDelete($id)
+    {
+        $article= Article::where('id', $id)->first();
+        if ($article) {
+            $article->delete();
+            return redirect()->route('reportedArticles')
+                ->with('success', AdminMessageEnum::ARTICLE_DELETE_SUCCESS);
+        }
+        return redirect()->route('allArticles')
+            ->with('error', AdminMessageEnum::ARTICLE_DELETE_FAIL);
+    }
 
     public function commentDelete($id)
     {
         $message = Comment::where('id', $id)->first();
         if ($message) {
             $message->delete();
-            return redirect()->route('allComments')
+            return redirect()->route('reportedComments')
                 ->with('success', AdminMessageEnum::COMMENT_DELETE_SUCCESS);
         }
     }
