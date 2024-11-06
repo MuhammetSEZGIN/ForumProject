@@ -17,9 +17,9 @@ class FileService
         $this->fileHandler = $fileHandler;
     }
 
-    public function export(array $data): string
+    public function export(array $data, string $fileName): string
     {
-        return $this->fileHandler->export($data);
+        return $this->fileHandler->export($data, $fileName);
     }
     public function import($filePath): array
     {

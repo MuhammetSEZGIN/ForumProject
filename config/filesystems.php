@@ -49,6 +49,14 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
+            'url' => env('APP_URL').'/ftp',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+
+        'local_files' => [
+            'driver' => 'local',
+            'root' => base_path('FTP'),
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
             'throw' => false,

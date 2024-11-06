@@ -13,6 +13,7 @@ use App\Models\UserLog;
 use http\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class AdminController extends Controller
 {
@@ -97,6 +98,29 @@ class AdminController extends Controller
             return redirect()->route('reportedComments')
                 ->with('success', AdminMessageEnum::COMMENT_DELETE_SUCCESS);
         }
+        return redirect()->route('reportedComments')
+            ->with('error', AdminMessageEnum::COMMENT_DELETE_FAIL);
     }
+
+    public function userExportExcel()
+    {
+        $data = User::select('id', 'name', 'email', 'created_at')->get()->toArray();
+        $columnNames = ['id', 'name', 'email', 'created_at'];
+        $data = array_merge([$columnNames], $data);
+        $filePath = $this->excelService->export($data, 'users');
+        // dosyayı indir ve sadece indirilen yerde kalsın
+        return response()->download($filePath)->deleteFileAfterSend(true);
+    }
+
+    public function userLogExportExcel()
+    {
+        $data = UserLog::all()->toArray();
+        $columnNames = Schema::getColumnListing('userLogs');
+        $data = array_merge([$columnNames], $data);
+        $filePath = $this->excelService->export($data, 'user_logs');
+        // dosyayı indir ve sadece indirilen yerde kalsın
+        return response();
+    }
+
 }
 

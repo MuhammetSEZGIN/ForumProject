@@ -177,15 +177,15 @@
                 </a>
             </li>
             <li>
-                <a href="#" class="nav-link link-body-emphasis">
+                <a href="" class="nav-link link-body-emphasis">
                     <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#speedometer2"/></svg>
                     Dashboard
                 </a>
             </li>
             <li>
-                <a href="#" class="nav-link link-body-emphasis">
+                <a href="{{route('allUsers')}}" class="nav-link link-body-emphasis {{request()->routeIs('adminIndex') ? 'active':''}}">
                     <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#table"/></svg>
-                    Orders
+                    All Users
                 </a>
             </li>
             <li>

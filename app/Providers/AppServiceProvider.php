@@ -13,7 +13,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton('App\Services\FileService.excel', function ($app) {
+            return new \App\Services\FileService(new \App\Modules\FileHandlers\ExcelHandler());
+        });
+
+        $this->app->singleton('App\Services\FileService.pdf', function ($app) {
+            return new \App\Services\FileService(new \App\Modules\FileHandlers\PdfHandler());
+        });
+
     }
 
     /**

@@ -9,6 +9,7 @@ use App\Models\Comment;
 use App\Models\ReportedArticle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Validation\ValidationException;
 use App\Helpers\UserActionLogHelper;
 
@@ -91,7 +92,6 @@ class ArticleController extends Controller
             "title"=>"required",
             "text"=>"required",
             "categoryID"=>"required",
-
         ]);
         $newArticle=Article::create([
             "title"=>$validatedData["title"],
@@ -212,5 +212,45 @@ class ArticleController extends Controller
         }
     }
 
+
+    public function exportArticleToExcel($id)
+    {
+        $article= Article::where('articleID', $id)->get()->toArray();
+        $columnNames = Schema::getColumnListing('articles');
+        $data = array_merge([$columnNames], $article);
+        $filePath = $this->excelService->export($data, $article[0]['title']);
+        // dosyayı indir ve sadece indirilen yerde kalsın
+        return response("File exported successfully");
+
+    }
+
+    public function exportAllArticlesToExcel()
+    {
+        $userId= Auth::id();
+        $articles = Article::where('userID', $userId)->get()->toArray();
+        $columnNames = Schema::getColumnListing('articles');
+        $data = array_merge([$columnNames], $articles);
+        $filePath = $this->excelService->export($data, 'articles');
+        // dosyayı indir ve sadece indirilen yerde kalsın
+        return response()->download($filePath)->deleteFileAfterSend(true);
+    }
+
+    public function importArticleFromExcel(Request $request)
+    {
+        $inportedData = $this->excelService->import($request->file('file'));
+        $validatedData = $request->validate([
+            'title' => 'required',
+            'content' => 'required',
+            'category_id' => 'required',
+            'isActive' => 'required',
+        ]);
+        $article = Article::create([
+            'title' => $validatedData['title'],
+            'content' => $validatedData['content'],
+            'category_id' => $validatedData['category_id'],
+            'isActive' => $validatedData['isActive'],
+        ]);
+        return response()->json($article);
+    }
 
 }

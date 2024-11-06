@@ -35,9 +35,13 @@
                                     <x-slot name="modalBodyText">Makaleyi silmek istediğinize emin misiniz?</x-slot>
                                 </x-modal-button>
                             </form>
+                            <form action="{{route('exportArticleToExcel', ['id'=>$article->articleID])}}" method="POST">
+                                @csrf
+                                <button class="btn btn-primary btn-sm" type="submit">Excel'e Çıkart</button>
+                            </form>
                         </td>
                     </tr>
-
+            </tbody>
                 @endforeach
             @else
                 <tr>
@@ -46,6 +50,7 @@
             @endif
 
             </tbody>
+
         </table>
     </x-slot>
 </x-layouts.layout>
