@@ -48,7 +48,8 @@ class FileController extends Controller
              for($i=1; $i<count($xlsx->rows()); $i++){
                  if(User::where('id',$xlsx->rows()[$i][1])->count()!=1){
                      UserActionLogHelper::logAction(UserLogEnum::REGISTER_FAIL, ['error'=>'Author not found']);
-
+                     $this->removeFilesToErrors($file);
+                     echo 'Author not found';
                      continue;
                  }
                 Article::create([
@@ -68,10 +69,9 @@ class FileController extends Controller
 
     }
 
-    function removeFilesToErrors($from, $to){
-        if(File::exists($from)){
-            File::move($from, $to);
-
+    function removeFilesToErrors($from): void{
+        if(Storage::exists($from)){
+           Storage::move($from, 'ERRORS/');
         }
     }
 
