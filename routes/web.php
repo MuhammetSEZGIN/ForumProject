@@ -15,6 +15,11 @@ Route::get('/test', function () {
     Mail::to('sezginmuhammet454@gmail.com')->send(new AuthReset());
     return "Mail Sent";
 });
+Route::get('/info', function () {
+   return
+       phpinfo();
+
+});
 
 //Admin Routes
 Route::get("/index", [AdminController::class, "index"])->name("adminIndex");

@@ -1,11 +1,8 @@
 <?php
 namespace App\Helpers;
 use App\Models\UserActionLog;
-use App\Models\UserLog;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
+
 
 class UserActionLogHelper
 {
