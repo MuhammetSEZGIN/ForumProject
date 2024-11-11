@@ -42,6 +42,9 @@ class FileController extends Controller
         }
     }
 
+    /*
+     * FTP sunucusundan dosyaları local sunucuya çeker
+     * */
     public function updateLocalFromFtp()
     {
         $files = Storage::disk('ftp')->files();
@@ -52,30 +55,103 @@ class FileController extends Controller
         foreach ($files as $file) {
 
             Storage::disk('local_files')->put('INBOX/'.basename($file), $file);
-            FileSystemLogHelper::logAction(FileMessagesEnum::FILE_UPLOADED_SUCCESSFULLY, $file);
+            FileSystemLogHelper::logAction(FileMessagesEnum::FILE_DOWNLOADED_FROM_FTP_SERVER_SUCCESSFULLY, $file);
         }
-        return response()->json(FileMessagesEnum::FILE_UPLOADED_FROM_FTP_SERVER_SUCCESSFULLY);
+        return response()->json(FileMessagesEnum::FILE_DOWNLOADED_FROM_FTP_SERVER_SUCCESSFULLY);
 
     }
 
-
-    public function createRaporFiles($filePath)
+    public function createAndSendRaporFiles()
     {
-        $xlsx = SimpleXLSX::parse(base_path($filePath));
-        $raporArray= [];
-        $articleIdColumnNo= array_search("articleID",$xlsx->rows()[0]);
+        //$this->updateLocalFromFtp();
+        $files = Storage::disk('local_files')->files('INBOX');
+        if (count($files) == 0) {
+            FileSystemLogHelper::logAction(FileMessagesEnum::NO_FILE_IN_INBOX, 'INBOX');
+            return response()->json(FileMessagesEnum::NO_FILE_IN_INBOX);
+        }
+        $test= basename($files[0]);
+        foreach ($files as $file) {
+            // metadata kontrol et ?
+            if(pathinfo($file, PATHINFO_EXTENSION) != 'xlsx') {
+                continue;
+            }
+            $raporArray = $this->createRaporArray(base_path('FTP/'.$file));
+            /*echo "<pre>";
+            print_r($raporArray);
+            echo "</pre>";*/
+            $this->createRaporFile($raporArray, $file);
+            $this->sendToFtp('OUTBOX/'.basename($file));
+            FileSystemLogHelper::logAction(FileMessagesEnum::FILE_UPLOADED_TO_FTP_SUCCESSFULLY, basename($file));
+        }
+        return response()->json(FileMessagesEnum::FILE_UPLOADED_TO_FTP_SUCCESSFULLY);
+    }
 
-        for($i=1; $i<count($xlsx->rows()); $i++){
-            $raporArray[$i]=$xlsx->rows()[$i];
-            $raporArray[$i+1]=Comment::find($xlsx->rows()[$i][$articleIdColumnNo])->toArray();
-
+    /*
+     * Verilen dosyaların içerisindeki makalelere ait yorumları database den çekerek makale ve yorumların olduğu
+     * yeni bir array oluşturur.
+     * */
+    public function createRaporArray($filePath)
+    {
+        $xlsx = SimpleXLSX::parse($filePath);
+        if($xlsx){
+            $raporArray= [];
+            $raporArray[0]= $xlsx->rows()[0];
+            $articleIdColumnNo= array_search("articleID",$xlsx->rows()[0]);
+            $count=1;
+            for($i=1; $i<count($xlsx->rows()); $i++){
+                // $raporArray[$count]=$xlsx->rows()[$i];
+                $raporArray[$count]=[
+                    $xlsx->rows()[$i][0],
+                    $xlsx->rows()[$i][1],
+                    $xlsx->rows()[$i][2],
+                    $xlsx->rows()[$i][3],
+                    $xlsx->rows()[$i][4],
+                    $xlsx->rows()[$i][5],
+                    $xlsx->rows()[$i][6],
+                    $xlsx->rows()[$i][7]
+                ];
+                $comments = Comment::where('articleID', $xlsx->rows()[$i][$articleIdColumnNo])->get();
+                $comments->each(function ($comment) use (&$raporArray, &$count){
+                    //$raporArray[++$count]=$comment->toArray();
+                    $raporArray[++$count]=[
+                        $comment->commentID,
+                        $comment->articleID,
+                        $comment->content,
+                        $comment->isActive,
+                        $comment->created_at->format('Y-m-d H:i:s'),
+                        $comment->updated_at->format('Y-m-d H:i:s'),
+                    ];
+                });
+                $count++;
+            }
+            return $raporArray;
+        }
+        else{
+            FileSystemLogHelper::logAction(FileMessagesEnum::FILE_NOT_FOUND_FROM_LOCAL, $filePath);
+            return response()->json(FileMessagesEnum::FILE_NOT_FOUND_FROM_LOCAL);
         }
 
+
+    }
+
+    public function createRaporFile(array $raporArray, $fileName):void
+    {
+        SimpleXLSXGen::fromArray($raporArray)->saveAs(base_path("FTP/OUTBOX/".basename($fileName)));
+    }
+    public function sendToFtp($filePath)
+    {
+        $file= Storage::disk('local_files')->get($filePath);
+        if($file==null){
+            FileSystemLogHelper::logAction(FileMessagesEnum::FILE_NOT_FOUND_FROM_LOCAL, $filePath);
+            return response()->json(FileMessagesEnum::FILE_NOT_FOUND_FROM_LOCAL);
+        }
+        Storage::disk('ftp')->put($filePath, $file );
+        FileSystemLogHelper::logAction(FileMessagesEnum::FILE_NOT_FOUND_FROM_LOCAL, $filePath);
+        return response()->json(FileMessagesEnum::FILE_SEND_TO_FTP);
 
     }
 
     /*
-    * $file parametresi dosyanın yoludur
     * dosya içerisinde userID verisini arar ve bulduğu user verilerini dosyaya yazar
     * kullanıcı bulunamadıysa ağer dosya error kalsörüne aktarılır
     * */
@@ -90,7 +166,7 @@ class FileController extends Controller
             if(pathinfo($file, PATHINFO_EXTENSION) != 'xlsx') {
                 continue;
             }
-            $this->createRaporFiles('FTP/' . $file);
+            //$this->createRaporFiles('FTP/' . $file);
             $xlsx = SimpleXLSX::parse(base_path('FTP/' . $file));
 
             for ($i = 1; $i < count($xlsx->rows()); $i++) {
@@ -123,6 +199,9 @@ class FileController extends Controller
 
     }
 
+    /*
+     * Oluşan hatalar varsa bu hatalı dosyaları ERROR klasörüne taşır
+     * */
     function removeFilesToErrors($from): void
     {
         if(!Storage::disk('local_files')->exists('ERROR/')) {

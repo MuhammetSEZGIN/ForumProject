@@ -51,6 +51,10 @@ class BaseSeeder extends Seeder
               ["content" => "Great Article", "articleID" => 4,"userID"=>"1", "created_at" => now(),"isApproved"=>true, "updated_at" => now()],
               ["content" => "Great Article", "articleID" => 5,"userID"=>"1", "created_at" => now(),"isApproved"=>true, "updated_at" => now()],
               ["content" => "Great Article", "articleID" => 6,"userID"=>"3", "created_at" => now(),"isApproved"=>true, "updated_at" => now()],
+              ["content" => "Great Article", "articleID" => 1,"userID"=>"3", "created_at" => now(),"isApproved"=>true, "updated_at" => now()],
+              ["content" => "Great Article", "articleID" => 1,"userID"=>"3", "created_at" => now(),"isApproved"=>true, "updated_at" => now()],
+              ["content" => "Great Article", "articleID" => 1,"userID"=>"3", "created_at" => now(),"isApproved"=>true, "updated_at" => now()],
+
          ]);
 
        DB::table("article__category")->insert([

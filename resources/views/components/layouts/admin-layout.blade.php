@@ -10,9 +10,6 @@
     <title>Dikbiyik Forum</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sidebars/">
-
-
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
 
     <link href="{{asset("assets/dist/css/bootstrap.min.css")}}" rel="stylesheet">
@@ -183,7 +180,7 @@
                 </a>
             </li>
             <li>
-                <a href="{{route('allUsers')}}" class="nav-link link-body-emphasis {{request()->routeIs('adminIndex') ? 'active':''}}">
+                <a href="{{route('allUsers')}}" class="nav-link link-body-emphasis {{request()->routeIs('allUsers') ? 'active':''}}">
                     <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#table"/></svg>
                     All Users
                 </a>

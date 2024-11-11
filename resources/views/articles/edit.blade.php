@@ -62,6 +62,7 @@
             var quill = new Quill('#editor', {
                 theme: 'snow'
             });
+
             $("#identifier").on("submit", function () {
                 // Quill editor içeriğini alıp textarea'ya aktaralım
                 $("#hiddenArea").val(quill.root.innerHTML);

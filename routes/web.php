@@ -75,8 +75,9 @@ Route::post("/reportArticle/{id}", [ArticleController::class, "reportArticle"])-
 
 
 Route::get("/test",[FileController::class, "test"])->name("test");
-Route::get("/userLogExportExcel",[FileController::class, "userLogExportExcel"])->name("userLogExportExcel");
-Route::post("/exportArticleToExcel/{id}",[FileController::class, "exportArticleToExcel"])->name("exportArticleToExcel");
-Route::post("/importArticleToExcel",[FileController::class, "importArticleToExcel"])->name("importArticleToExcel");
+Route::get("/userLogExportExcel",[AdminController::class, "userLogExportExcel"])->name("userLogExportExcel");
+Route::post("/exportArticleToExcel/{id}",[ArticleController::class, "exportArticleToExcel"])->name("exportArticleToExcel");
+Route::post("/importArticleToExcel",[ArticleController::class, "importArticleToExcel"])->name("importArticleToExcel");
 
 Route::get("takeArticlesFromFiles",[FileController::class, "takeArticlesFromFiles"])->name("takeArticlesFromFiles");
+Route::get("createAndSendRaporFiles",[FileController::class, "createAndSendRaporFiles"])->name("createAndSendRaporFiles");
