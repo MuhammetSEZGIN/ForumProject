@@ -19,7 +19,7 @@
             @foreach($comments as $comment)
 
             <tr>
-                <td>{{$comment->article->title}}</td>
+                <td><a href="{{ route('showArticle', ['id' => $comment->article->articleID]) }}">{{$comment->article->title}}</a> </td>
                 <td>{{$comment->user->name}}</td>
                 <td>{{$comment->content}}</td>
                 <td>{{$comment->created_at}}</td>

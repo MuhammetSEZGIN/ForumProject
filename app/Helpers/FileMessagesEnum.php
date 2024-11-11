@@ -1,6 +1,7 @@
 <?php
 namespace App\Helpers;
 enum FileMessagesEnum: string {
+    case FILE_COULD_NOT_READ_FROM_FILE = 'File could not read from file';
     case FILE_UPLOADED_TO_FTP_SUCCESSFULLY = 'File uploaded to FTP successfully';
     case FILE_DOWNLOADED_FROM_FTP_SERVER_SUCCESSFULLY = 'File uploaded successfully from FTP server';
     case FILE_UPLOADED_FROM_FTP_SERVER_FAIL = 'File uploaded failed from FTP server';

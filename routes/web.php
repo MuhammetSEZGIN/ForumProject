@@ -81,3 +81,7 @@ Route::post("/importArticleToExcel",[ArticleController::class, "importArticleToE
 
 Route::get("takeArticlesFromFiles",[FileController::class, "takeArticlesFromFiles"])->name("takeArticlesFromFiles");
 Route::get("createAndSendRaporFiles",[FileController::class, "createAndSendRaporFiles"])->name("createAndSendRaporFiles");
+
+
+Route::get("createPdf",[\App\Http\Controllers\PdfController::class, "createPdf"])->name("createPdf");
+Route::get("allUsers",[\App\Http\Controllers\PdfController::class, "allUsers"])->name("allUsers");

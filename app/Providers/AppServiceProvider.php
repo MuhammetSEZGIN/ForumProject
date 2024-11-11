@@ -21,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
             return new \App\Services\FileService(new \App\Modules\FileHandlers\PdfHandler());
         });
 
+
     }
 
     /**
