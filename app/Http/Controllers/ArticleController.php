@@ -124,7 +124,7 @@ class ArticleController extends Controller
       if($userId){
             $articles = Article::query()->where('authorID',$userId)
             ->where('isActive',true)->get();
-            return view('user.myArticles',[
+            return view('user.myarticles',[
                 'articles' => $articles,
             ]);
         }else{
