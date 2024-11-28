@@ -25,7 +25,7 @@ class AdminController extends Controller
     public function userLogs()
     {
         $userLogs = UserLog::with('user')->get();
-        return view('admin.userLogs', ['userLogs' => $userLogs])
+        return view('admin.userlogs', ['userLogs' => $userLogs])
             ->with('success', AdminMessageEnum::VIEW_ALL_LOGS);
     }
 
