@@ -52,6 +52,8 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
         <!-- Initialize Quill editor -->
+
+
         <script>
             var quill = new Quill('#editor', {
                 theme: 'snow'

@@ -48,6 +48,10 @@ class User extends Authenticatable
         ];
     }
 
+    public function todolists()
+    {
+        return $this->hasMany(Todolist::class);
+    }
     public function articles()
     {
         return $this->hasMany(Article::class);

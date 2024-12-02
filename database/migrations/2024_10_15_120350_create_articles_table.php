@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('articles', function (Blueprint $table) {
             $table->id("articleID");
-            $table->foreignId("authorID")->constrained("users", "id");
+            $table->foreignId("authorID")->constrained("users", "id")->onDelete("cascade");
             $table->text("content");
             $table->text("title");
             $table->integer("viewCount");

@@ -186,9 +186,9 @@
                 </a>
             </li>
             <li>
-                <a href="#" class="nav-link link-body-emphasis">
+                <a href="{{route('allArticles')}}" class="nav-link link-body-emphasis">
                     <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"/></svg>
-                    Products
+                    Articles
                 </a>
             </li>
             <li>
@@ -225,6 +225,5 @@
     {{$slot}}
 </main>
 <script src="{{asset("assets/dist/js/bootstrap.bundle.min.js")}}"></script>
-
 <script src="{{asset("assets/sidebars.js")}}"></script></body>
 </html>

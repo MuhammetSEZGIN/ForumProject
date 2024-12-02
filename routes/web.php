@@ -28,6 +28,8 @@ Route::delete("/userLogs/delete/{id}", [AdminController::class, "userLogsDelete"
 Route::delete("/userLogs/deleteAll", [AdminController::class, "userLogsDeleteAll"])->name("userLogsDeleteAll");
 Route::delete("/user/delete/{id}", [AdminController::class, "userDelete"])->name("userDelete");
 Route::get("/allUsers", [AdminController::class, "allUsers"])->name("allUsers");
+Route::get("allArticles", [AdminController::class, "allArticles"])->name("allArticles");
+Route::delete("/deleteArticleAdmin/delete/{id}", [AdminController::class, "deleteArticleAdmin"])->name("deleteArticleAdmin");
 
 Route::get("/reportedComments", [AdminController::class, "reportedComments"])->name("reportedComments");
 Route::get("reportedArticles ", [AdminController::class, "reportedArticles"])->name("reportedArticles");
@@ -82,6 +84,9 @@ Route::post("/importArticleToExcel",[ArticleController::class, "importArticleToE
 Route::get("takeArticlesFromFiles",[FileController::class, "takeArticlesFromFiles"])->name("takeArticlesFromFiles");
 Route::get("createAndSendRaporFiles",[FileController::class, "createAndSendRaporFiles"])->name("createAndSendRaporFiles");
 
+Route::get("todolists", [\App\Http\Controllers\UserController::class, "todolists"])->name("todolist");
+Route::post("addTodoList", [\App\Http\Controllers\UserController::class, "addTodoList"])->name("addTodoList");
+Route::delete("deleteTodoList/{id}", [\App\Http\Controllers\UserController::class, "deleteTodoList"])->name("deleteTodoList");
+Route::patch("todoStatusUpdate/{id}", [\App\Http\Controllers\UserController::class, "todoStatusUpdate"])->name("todoStatusUpdate");
 
 Route::get("createPdf",[\App\Http\Controllers\PdfController::class, "createPdf"])->name("createPdf");
-Route::get("allUsers",[\App\Http\Controllers\PdfController::class, "allUsers"])->name("allUsers");

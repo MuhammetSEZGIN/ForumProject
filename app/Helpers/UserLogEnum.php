@@ -39,7 +39,8 @@ enum UserLogEnum: string
 
     case COMMENT_DELETE_FAIL = "Yorum Silme Basarisiz";
 
-
-
+    case TODOLIST_ADD_SUCCESS = "Yeni liste eklendi";
+    case TODOLIST_ADD_FAIL = "Yeni liste ekleme basarisiz";
+    case TODOLIST_STATUS_UPDATE_SUCCESS = "Liste durumu guncellendi";
 
 }

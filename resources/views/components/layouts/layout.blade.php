@@ -12,6 +12,9 @@
     <!-- Google Fonts -->
     <link
         href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+        rel="stylesheet"/>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins&display=swap"
         rel="stylesheet"
     />
     <!-- MDB -->
@@ -19,6 +22,7 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/8.0.0/mdb.min.css"
         rel="stylesheet"
     />
+
 </head>
 
 <body>

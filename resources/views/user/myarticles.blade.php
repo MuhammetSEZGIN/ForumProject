@@ -48,9 +48,6 @@
                     <td colspan="5"><p class="text-center">Makale Bulunmamakta</p></td>
                 </tr>
             @endif
-
-            </tbody>
-
         </table>
     </x-slot>
 </x-layouts.layout>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Helpers\AdminMessageEnum;
+use App\Helpers\UserActionLogHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\Comment;
@@ -53,10 +54,16 @@ class AdminController extends Controller
         with('error', AdminMessageEnum::USER_LOGS_DELETE_ALL_FAIL);
     }
 
-    public function allUsers()
+    public function allUsers(Request $request)
     {
-        $users = User::all();
-        return redirect()->route('allUsers', ['users' => $users])->
+        $query = User::query();
+        if ($request->has('search') && $request["search"] != '') {
+            $query->where('name', 'like', '%' . $request["search"] . '%')
+                ->orWhere('email', 'like', '%' . $request["search"] . '%');
+        }
+        $users = $query->with('role')->where("id","!=",1)->paginate(15);
+
+        return view('admin.allUsers', ['users' => $users])->
         with('success', AdminMessageEnum::VIEW_ALL_USERS);
     }
 
@@ -64,6 +71,7 @@ class AdminController extends Controller
     {
         $user = User::where('id', $id)->first();
         if ($user) {
+
             $user->delete();
             return redirect()->route('allUsers')
                 ->with('success', AdminMessageEnum::USER_DELETE_SUCCESS);
@@ -72,6 +80,30 @@ class AdminController extends Controller
         with('error', AdminMessageEnum::USER_DELETE_FAIL);
     }
 
+    public function allArticles(Request $request)
+    {
+        $query = Article::query();
+        if($request->has('search') && $request["search"] != ''){
+            $query->where('title', 'like', '%' . $request["search"] . '%')
+                ->orWhere('content', 'like', '%' . $request["search"] . '%')
+                ->orWhereHas('user', function($q) use ($request) {
+                    $q->where('name', 'like', '%' . $request["search"] . '%');
+                });
+        }
+        $articles = $query->with('user')->paginate(15);
+        return view('admin.allArticles', ['articles' => $articles]);
+    }
+
+    public function deleteArticleAdmin($id){
+        $article=Article::query()->findOrFail($id);
+        if($article) {
+            $article->delete();
+            UserActionLogHelper::logAction("Makale silindi", request()->all());
+        }else
+            UserActionLogHelper::logAction("Makale silinemedi", request()->all());
+
+        return redirect()->back();
+    }
     public function reportedComments()
     {
         $comments = ReportedComment::with('user')->with('comment')->get();

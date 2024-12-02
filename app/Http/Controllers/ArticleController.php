@@ -178,7 +178,7 @@ class ArticleController extends Controller
         }else{
             UserActionLogHelper::logAction("Makale silinemedi", request()->all());
         }
-        return redirect('myArticles');
+        return redirect()->back();
     }
 
     /*
