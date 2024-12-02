@@ -36,22 +36,12 @@ class UserLogs
         if(isset($postData['password_confirmation'])){
             $postData['password_confirmation']='***';
         }
-        /*
-        if(Auth::id()==null){
-            $role=Role::firstOrCreate(['name' => 'anonim',]);
-            $user= User::factory()->firstOrCreate([
-                'id'=>1,
-                'name' =>'anonim',
-                'password' => bcrypt('password'),
-                'roleID' => $role->id,
-            ]);
-        }*/
+
         UserLog::create([
             'userID' => Auth::check()? Auth::id():1,
             'ip'=>$request->ip(),
             'url'=>$request->url(),
             'postData'=>json_encode($postData),
-            'userAgent'=>$request->header('User-Agent'),
             'created_at'=>now(),
             'updated_at'=>now()
         ]);
