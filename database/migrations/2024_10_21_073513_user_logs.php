@@ -12,11 +12,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-      Schema::create('userLogs', function (Blueprint $table) {
+      Schema::create('userlogs', function (Blueprint $table) {
           $table->id();
           $table->foreignId('userID')->nullable()->constrained('users')->cascadeOnDelete();
           $table->ipAddress('ip');
-          $table->string('userAgent');
           $table->string('url');
           $table->json('postData');
           $table->timestamps();
