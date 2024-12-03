@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Category;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -24,6 +25,19 @@ return new class extends Migration
         User::query()->create(
             ["name"=>"admin", "email"=>"admin@admin.com", "password"=>"qwe", "created_at"=>now(), "updated_at"=>now(), "roleID"=>2],
         );
+        Category::insert([
+            ["categoryName" => "Yazılım", "created_at" => now(), "updated_at" => now()],
+            ["categoryName" => "Donanım", "created_at" => now(), "updated_at" => now()],
+            ["categoryName" => "Mobil Teknolojiler", "created_at" => now(), "updated_at" => now()],
+            ["categoryName" => "Oyun Dünyası", "created_at" => now(), "updated_at" => now()],
+            ["categoryName" => "Yapay Zeka", "created_at" => now(), "updated_at" => now()],
+            ["categoryName" => "Siber Güvenlik", "created_at" => now(), "updated_at" => now()],
+            ["categoryName" => "Ağ ve İnternet", "created_at" => now(), "updated_at" => now()],
+            ["categoryName" => "Elektronik ve Robotik", "created_at" => now(), "updated_at" => now()],
+            ["categoryName" => "Bilim ve Teknoloji", "created_at" => now(), "updated_at" => now()],
+            ["categoryName" => "Diğer Teknolojik Konular", "created_at" => now(), "updated_at" => now()],
+        ]);
+
     }
 
     /**
