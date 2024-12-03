@@ -69,7 +69,9 @@ class AdminController extends Controller
 
     public function userDelete($id)
     {
+
         $user = User::where('id', $id)->first();
+
         if ($user) {
 
             $user->delete();
@@ -95,7 +97,9 @@ class AdminController extends Controller
     }
 
     public function deleteArticleAdmin($id){
+
         $article=Article::query()->findOrFail($id);
+
         if($article) {
             $article->delete();
             UserActionLogHelper::logAction("Makale silindi", request()->all());

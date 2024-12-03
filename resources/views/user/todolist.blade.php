@@ -60,7 +60,7 @@
                                                       method="POST">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <x-modal-button class="btn btn-danger btn-sm">
+                                                    <x-modal-button class="btn btn-danger btn-sm" id="{{$todolists[$i]->id}}">
                                                         <x-slot name="modalTitleText">Sil</x-slot>
                                                         <x-slot name="modalButtonText">Sil</x-slot>
                                                         <x-slot name="modalBodyText">Elemanı silmek ister misiniz?

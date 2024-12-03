@@ -17,6 +17,7 @@ return new class extends Migration
           $table->foreignId('userID')->nullable()->constrained('users')->cascadeOnDelete();
           $table->ipAddress('ip');
           $table->string('url');
+          $table->string('userAgent');
           $table->json('postData');
           $table->timestamps();
 

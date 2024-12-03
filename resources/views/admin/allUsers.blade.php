@@ -19,26 +19,27 @@
             </tr>
             </thead>
             <tbody>
-            @foreach($users as $user)
+            @foreach($users as $u)
 
                 <tr>
 
-                    <td>{{ $user->id }}</td>
-                    <td>{{ $user->name }}</td>
-                    <td>{{ $user->email }}</td>
-                    <td>{{ $user->role->name }}</td>
-                    <td>{{ $user->created_at }}</td>
+                    <td>{{ $u->id }}</td>
+                    <td>{{ $u->name }}</td>
+                    <td>{{ $u->email }}</td>
+                    <td>{{ $u->role->name }}</td>
+                    <td>{{ $u->created_at }}</td>
                     <td>
-                        <form action="{{route("userDelete",$user->id)}}" method="POST">
+                        <form action="{{ route('userDelete', $u->id) }}" method="POST">
                             @csrf
                             @method('DELETE')
-                            <x-modal-button class="btn btn-danger btn-sm">
+                            <x-modal-button class="btn btn-danger btn-sm" id="{{$u->id}}">
                                 <x-slot name="modalTitleText">Sil</x-slot>
                                 <x-slot name="modalButtonText">Sil</x-slot>
-                                <x-slot name="modalBodyText">Yorumu silmek ister misiniz?</x-slot>
+                                <x-slot name="modalBodyText">Kullanıcıyı silmek ister misiniz?</x-slot>
                             </x-modal-button>
                         </form>
                     </td>
+                    <td>{{ $u->id }}</td>
                 </tr>
 
             @endforeach

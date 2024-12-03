@@ -102,8 +102,8 @@ class AdminTest extends TestCase
         $admin = $this->getAdmin();
         $this->actingAs($admin);
         $response = $this->get(route('allUsers'));
-        $response->assertStatus(302);
-        $response->assertSessionHas('success', AdminMessageEnum::VIEW_ALL_USERS);
+        $response->assertStatus(200);
+        $response->assertViewHas('success', AdminMessageEnum::VIEW_ALL_USERS);
     }
 
     public function test_admin_can_delete_user()

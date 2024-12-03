@@ -44,7 +44,7 @@
                     </div>
 
                     <div class="col d-flex justify-content-end">
-                        <x-modal-button class="btn btn-success">
+                        <x-modal-button class="btn btn-success" id="{{$article->articleID}}">
                             <x-slot name="modalTitleText">Save</x-slot>
                             <x-slot name="modalButtonText">Save</x-slot>
                             <x-slot name="modalBodyText">Değişiklikleri kaydetmek ister misiniz?</x-slot>

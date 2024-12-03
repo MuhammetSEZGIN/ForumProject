@@ -42,6 +42,7 @@ class UserLogs
             'ip'=>$request->ip(),
             'url'=>$request->url(),
             'postData'=>json_encode($postData),
+            'userAgent'=>$request->header('User-Agent'),
             'created_at'=>now(),
             'updated_at'=>now()
         ]);
