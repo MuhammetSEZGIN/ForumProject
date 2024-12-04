@@ -30,6 +30,7 @@ Route::delete("/user/delete/{id}", [AdminController::class, "userDelete"])->name
 Route::get("/allUsers", [AdminController::class, "allUsers"])->name("allUsers");
 Route::get("allArticles", [AdminController::class, "allArticles"])->name("allArticles");
 Route::delete("/deleteArticleAdmin/delete/{id}", [AdminController::class, "deleteArticleAdmin"])->name("deleteArticleAdmin");
+Route::patch("publishArticle/{id}", [AdminController::class, "publishArticle"])->name("publishArticle");
 
 Route::get("/reportedComments", [AdminController::class, "reportedComments"])->name("reportedComments");
 Route::get("reportedArticles ", [AdminController::class, "reportedArticles"])->name("reportedArticles");

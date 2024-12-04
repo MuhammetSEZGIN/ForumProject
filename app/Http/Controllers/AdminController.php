@@ -96,6 +96,16 @@ class AdminController extends Controller
         return view('admin.allArticles', ['articles' => $articles]);
     }
 
+    public function publishArticle($id){
+        $article= Article::find($id);
+        if($article) {
+            $article->update([
+                'isActive' => true
+            ]);
+            UserActionLogHelper::logAction("Makale yayınlandı", request()->all());
+        }
+        return redirect()->back();
+    }
     public function deleteArticleAdmin($id){
 
         $article=Article::query()->findOrFail($id);

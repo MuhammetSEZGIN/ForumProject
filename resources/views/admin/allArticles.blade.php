@@ -28,7 +28,15 @@
                     <td>{{$article->created_at}}</td>
 
                     <td class="d-flex gap-1">
-
+                        @if(!$article->isActive)
+                            <form action="{{route('publishArticle', ['id'=>$article->articleID])}}" method="POST">
+                                @csrf
+                                @method('PATCH')
+                                <button class="btn btn-success btn-sm" type="submit">Yeniden Yayınla</button>
+                            </form>
+                        @else
+                            <p>Makale Yayında</p>
+                        @endif
                         <form action="{{route("deleteArticleAdmin",['id'=>$article->articleID])}}" method="POST">
                             @csrf
                             @method('DELETE')
@@ -42,6 +50,8 @@
                             @csrf
                             <button class="btn btn-primary btn-sm" type="submit">Excel'e Çıkart</button>
                         </form>
+
+
                     </td>
                 </tr>
 
