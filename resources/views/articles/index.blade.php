@@ -6,8 +6,9 @@
         <h2>{{$header}}</h2>
         <hr>
         @foreach($articles as $article)
-            <h2>{{$article->title}}</h2>
-            <div class="d-flex justify-content-end">
+
+            <div class="d-flex justify-content-between mt-0">
+                <h3>{{$article->title}}</h3>
                 <p><small>{{$article->created_at}}</small></p>
             </div>
             <p>{!! \Illuminate\Support\Str::limit($article->content, 200) !!} ...
