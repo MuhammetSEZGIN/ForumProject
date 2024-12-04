@@ -48,7 +48,7 @@
                             {{ Auth::getUser()["name"]}}
                         </button>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item text-center" href="#">Profil</a></li>
+                            <li><a class="dropdown-item text-center" href="{{route('todolist')}}">ToDoList</a></li>
 
                             <li><hr class="dropdown-divider"></li>
                             <li>

@@ -11,7 +11,7 @@
                 <h3>{{$article->title}}</h3>
                 <p><small>{{$article->created_at}}</small></p>
             </div>
-            <p>{!! \Illuminate\Support\Str::limit($article->content, 200) !!} ...
+            <p>{!! \Illuminate\Support\Str::limit($article->content, 200) !!}
                 <a href="{{ route('showArticle', ['id' => $article->articleID]) }}">Show Article</a>
             </p>
             <hr>
