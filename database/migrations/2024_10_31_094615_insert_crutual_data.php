@@ -19,10 +19,13 @@ return new class extends Migration
             ["name" => "admin", "created_at" => now(), "updated_at" => now()],
             ["name" => "anonim", "created_at" => now(), "updated_at" => now()],
         ]);
-        User::query()->create(
+        User::insert(
             ["name"=>"anonim", "email"=>"anonim@gmail.com", "password"=>"qwe", "created_at"=>now(), "updated_at"=>now(), "roleID"=>3],
         );
-        User::query()->create(
+        User::create(
+            ["name"=>"Muhammet", "email"=>"Muhammet@gmail.com", "password"=>"aDMIN%55Forum", "created_at"=>now(), "updated_at"=>now(), "roleID"=>2],
+        );
+        User::create(
             ["name"=>"admin", "email"=>"admin@admin.com", "password"=>"qwe", "created_at"=>now(), "updated_at"=>now(), "roleID"=>2],
         );
         Category::insert([
