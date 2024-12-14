@@ -1,4 +1,4 @@
-<p align="center"><a href="http://dikbiyik.com.tr" target="_blank"><img src="public/images/logo.png" width="400" alt="Logo"></a></p>
+<p align="center"><a href="http://dikbiyikforum.com.tr" target="_blank"><img src="public/images/logo.png" width="400" alt="Logo"></a></p>
 ForumProject is a comprehensive forum application developed as part of an internship project. It leverages the Laravel framework to provide a robust platform for online discussions and community engagement. The project includes essential features such as user authentication, post creation and management, commenting, search functionality, and an admin panel for overseeing users and content.
 
 ## Installation
