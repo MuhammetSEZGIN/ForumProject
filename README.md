@@ -13,7 +13,6 @@ cd ForumProject
 Install dependencies:
 ```
 composer install
-npm install
 ```
 Set up environment variables:
 (Edit .env file for your application)
