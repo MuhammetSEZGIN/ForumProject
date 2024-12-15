@@ -27,7 +27,6 @@ class PdfController extends Controller
          $data = [
              'users' => $users,
          ];
-
         return view('pdf.allUsers', $data);
      }
 }

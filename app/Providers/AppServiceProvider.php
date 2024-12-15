@@ -20,6 +20,9 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton('App\Services\FileService.pdf', function ($app) {
             return new \App\Services\FileService(new \App\Modules\FileHandlers\PdfHandler());
         });
+        $this->app->singleton('App\Services\FileService.word', function ($app) {
+            return new \App\Services\FileService(new \App\Modules\FileHandlers\WordHandler());
+        });
 
 
     }

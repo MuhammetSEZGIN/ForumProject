@@ -16,6 +16,9 @@ class RoleControl
      */
     public function handle(Request $request, Closure $next): Response
     {
-        return $next($request);
+        if(Auth::user()->isAdmin()){
+            return $next($request);
+        }
+        return redirect()->route('login');
     }
 }

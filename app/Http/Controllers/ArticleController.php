@@ -213,6 +213,12 @@ class ArticleController extends Controller
     }
 
 
+    public function addArticleFromWord(Request $request)
+    {
+        $inportedData = $this->wordService->import($request->file('file'));
+        dd($inportedData);
+    }
+
     public function exportArticleToExcel($id)
     {
         $article= Article::where('articleID', $id)->get()->toArray();

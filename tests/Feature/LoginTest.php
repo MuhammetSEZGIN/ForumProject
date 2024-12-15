@@ -42,6 +42,7 @@ class LoginTest extends TestCase
         $this->actingAs($user);// auth kontrolü yapmadan önce  o anki kullanıcıyı olarak belirler
         $this->assertAuthenticatedAs($user); // Auth kontrol yapar
     }
+
     public function test_user_cannot_login_with_incorrect_password(): void
     {
         $user= User::factory()->make([
