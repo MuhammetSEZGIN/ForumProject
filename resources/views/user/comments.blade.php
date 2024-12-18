@@ -40,6 +40,7 @@
                                         <x-slot name="modalButtonText">Sil</x-slot>
                                         <x-slot name="modalBodyText">Yorumu silmek ister misiniz?</x-slot>
                                     </x-modal-button>
+                                </form>
                             </td>
                     </tr>
                 @endforeach

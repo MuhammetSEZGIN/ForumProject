@@ -16,8 +16,8 @@ Route::get('/test', function () {
     return "Mail Sent";
 });
 Route::get('/info', function () {
-   return
-       phpinfo();
+    return
+        phpinfo();
 
 });
 
@@ -50,9 +50,8 @@ Route::post("/logout", [LoginController::class, "logout"])->name("logout");
 Route::get('/', [ArticleController::class, 'index'])->name('mainMenu');
 Route::get('/mainMenu', [ArticleController::class, 'index'])->name('mainMenu');
 
-Route::group([ 'middleware' => ['auth'] ],
-    function()
-    {
+Route::group(['middleware' => ['auth']],
+    function () {
         Route::get("/myarticle/{id}", [ArticleController::class, "editArticleShow"])->name("article.edit.show");
         Route::patch("/article/{id}", [ArticleController::class, "editArticle"])->name("editArticle");
         Route::delete("/article/{id}", [ArticleController::class, "deleteArticle"])->name("deleteArticle");
@@ -77,17 +76,17 @@ Route::post("/reportComment/{id}", [CommentController::class, "reportComment"])-
 Route::post("/reportArticle/{id}", [ArticleController::class, "reportArticle"])->name("reportArticle");
 
 
-Route::get("/test",[FileController::class, "test"])->name("test");
-Route::get("/userLogExportExcel",[AdminController::class, "userLogExportExcel"])->name("userLogExportExcel");
-Route::post("/exportArticleToExcel/{id}",[ArticleController::class, "exportArticleToExcel"])->name("exportArticleToExcel");
-Route::post("/importArticleToExcel",[ArticleController::class, "importArticleToExcel"])->name("importArticleToExcel");
+Route::get("/test", [FileController::class, "test"])->name("test");
+Route::get("/userLogExportExcel", [AdminController::class, "userLogExportExcel"])->name("userLogExportExcel");
+Route::post("/exportArticleToExcel/{id}", [ArticleController::class, "exportArticleToExcel"])->name("exportArticleToExcel");
+Route::post("/importArticleToExcel", [ArticleController::class, "importArticleToExcel"])->name("importArticleToExcel");
 
-Route::get("takeArticlesFromFiles",[FileController::class, "takeArticlesFromFiles"])->name("takeArticlesFromFiles");
-Route::get("createAndSendRaporFiles",[FileController::class, "createAndSendRaporFiles"])->name("createAndSendRaporFiles");
+Route::get("takeArticlesFromFiles", [FileController::class, "takeArticlesFromFiles"])->name("takeArticlesFromFiles");
+Route::get("createAndSendRaporFiles", [FileController::class, "createAndSendRaporFiles"])->name("createAndSendRaporFiles");
 
 Route::get("todolists", [\App\Http\Controllers\UserController::class, "todolists"])->name("todolist");
 Route::post("addTodoList", [\App\Http\Controllers\UserController::class, "addTodoList"])->name("addTodoList");
 Route::delete("deleteTodoList/{id}", [\App\Http\Controllers\UserController::class, "deleteTodoList"])->name("deleteTodoList");
 Route::patch("todoStatusUpdate/{id}", [\App\Http\Controllers\UserController::class, "todoStatusUpdate"])->name("todoStatusUpdate");
 
-Route::get("createPdf",[\App\Http\Controllers\PdfController::class, "createPdf"])->name("createPdf");
+Route::get("createPdf", [\App\Http\Controllers\PdfController::class, "createPdf"])->name("createPdf");

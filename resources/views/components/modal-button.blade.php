@@ -1,5 +1,5 @@
 
-@props(['id'])
+@props(['id' ])
 <button {{$attributes->merge(['class'=>'btn btn-primary', 'type'=>'button'])}} data-bs-toggle="modal" data-bs-target="#deleteModal{{ $id }}">
     {{$modalButtonText}}
 </button>
@@ -19,11 +19,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
-                <form action="{{ route('deleteComment', $id) }}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger">Onayla</button>
-                </form>
+                <button type="submit" class="btn btn-danger">Onayla</button>
             </div>
         </div>
     </div>
