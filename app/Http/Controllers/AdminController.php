@@ -2,18 +2,15 @@
 
 namespace App\Http\Controllers;
 
-
+use Illuminate\Support\Facades\Auth;
 use App\Helpers\AdminMessageEnum;
 use App\Helpers\UserActionLogHelper;
-use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\Comment;
 use App\Models\ReportedComment;
 use App\Models\User;
 use App\Models\UserLog;
-use http\Message;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class AdminController extends Controller
@@ -23,9 +20,29 @@ class AdminController extends Controller
         return view('admin.index');
     }
 
-    public function userLogs()
+    public function userLogs(Request $request)
     {
-        $userLogs = UserLog::with('user')->get();
+        $userID = Auth::user()->id;
+        $boolenSearch = false;
+        $query = UserLog::query();
+        if ($request->has('search') && $request["search"] != "") {
+            $query->with('user')
+                ->whereHas('user', function ($q) use ($request) {
+                    $q->where('name', 'like', '%' . $request["search"] . '%');
+                })
+                ->orWhere('ip', 'like', '%' . $request["search"] . '%')
+                ->orWhere('url', 'like', '%' . $request["search"] . '%')
+                ->orWhere('created_at', 'like', '%' . $request["search"] . '%')
+            ;
+            $boolenSearch = true;
+        }
+
+        if ($boolenSearch)
+            $userLogs = $query->paginate(6)->appends(['search' => $request["search"]]);
+        else
+            $userLogs = $query->where("userID", "!=", $userID)->paginate(6);
+
+
         return view('admin.userlogs', ['userLogs' => $userLogs])
             ->with('success', AdminMessageEnum::VIEW_ALL_LOGS);
     }
@@ -61,7 +78,7 @@ class AdminController extends Controller
             $query->where('name', 'like', '%' . $request["search"] . '%')
                 ->orWhere('email', 'like', '%' . $request["search"] . '%');
         }
-        $users = $query->with('role')->where("id","!=",1)->paginate(15);
+        $users = $query->with('role')->where("id", "!=", 1)->paginate(15);
 
         return view('admin.allUsers', ['users' => $users])->
         with('success', AdminMessageEnum::VIEW_ALL_USERS);
@@ -85,10 +102,10 @@ class AdminController extends Controller
     public function allArticles(Request $request)
     {
         $query = Article::query();
-        if($request->has('search') && $request["search"] != ''){
+        if ($request->has('search') && $request["search"] != '') {
             $query->where('title', 'like', '%' . $request["search"] . '%')
                 ->orWhere('content', 'like', '%' . $request["search"] . '%')
-                ->orWhereHas('user', function($q) use ($request) {
+                ->orWhereHas('user', function ($q) use ($request) {
                     $q->where('name', 'like', '%' . $request["search"] . '%');
                 });
         }
@@ -96,9 +113,10 @@ class AdminController extends Controller
         return view('admin.allArticles', ['articles' => $articles]);
     }
 
-    public function publishArticle($id){
-        $article= Article::find($id);
-        if($article) {
+    public function publishArticle($id)
+    {
+        $article = Article::find($id);
+        if ($article) {
             $article->update([
                 'isActive' => true
             ]);
@@ -106,18 +124,21 @@ class AdminController extends Controller
         }
         return redirect()->back();
     }
-    public function deleteArticleAdmin($id){
 
-        $article=Article::query()->findOrFail($id);
+    public function deleteArticleAdmin($id)
+    {
 
-        if($article) {
+        $article = Article::query()->findOrFail($id);
+
+        if ($article) {
             $article->delete();
             UserActionLogHelper::logAction("Makale silindi", request()->all());
-        }else
+        } else
             UserActionLogHelper::logAction("Makale silinemedi", request()->all());
 
         return redirect()->back();
     }
+
     public function reportedComments()
     {
         $comments = ReportedComment::with('user')->with('comment')->get();
@@ -126,7 +147,7 @@ class AdminController extends Controller
 
     public function articleDelete($id)
     {
-        $article= Article::where('id', $id)->first();
+        $article = Article::where('id', $id)->first();
         if ($article) {
             $article->delete();
             return redirect()->route('reportedArticles')
