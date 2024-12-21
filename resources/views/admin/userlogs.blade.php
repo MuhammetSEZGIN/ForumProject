@@ -1,5 +1,5 @@
 <x-layouts.admin-layout>
-    <div class="container w-100 mt-5">
+    <div class="container w-100 mt-5" style="overflow-x: auto;">
         <div class="mt-5 m-lg-5 w-20 d-flex justify-content-end">
             <form action="{{ route('userLogs') }}" method="GET">
                 <div class="input-group">

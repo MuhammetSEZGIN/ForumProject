@@ -39,7 +39,7 @@ class AdminController extends Controller
         }
 
         if ($boolenSearch)
-            $userLogs = $query->paginate(6)->appends(['search' => $request["search"]])->orderBy('created_at', 'desc');
+            $userLogs = $query->orderBy('created_at', 'desc')->paginate(6)->appends(['search' => $request["search"]]);
         else
             $userLogs = $query->with('user')->where("userID", "!=", $userID)->orderBy('created_at', 'desc')->paginate(6);
 
