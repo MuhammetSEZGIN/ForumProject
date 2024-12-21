@@ -13,9 +13,10 @@
             <thead>
             <tr>
                 <th>User</th>
+                <th>Ip</th>
                 <th>User Agent</th>
-                <th>Activity</th>
                 <th>Post Data</th>
+                <th>Action</th>
                 <th>Time</th>
             </tr>
             </thead>
@@ -29,21 +30,12 @@
                     @else
                         <td>Anonim</td>
                     @endif
+                    <td>{{ $log->ip }}</td>
                     <td>{{ $log->userAgent }}</td>
-                    <td>{{ $log->url }}</td>
                     <td>{{ $log->postData }}</td>
+                    <td>{{ $log->action }}</td>
                     <td>{{ $log->created_at }}</td>
-                    <td>
-                        <form action="{{ route('userLogsDelete', $log->id) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <x-modal-button class="btn btn-danger btn-sm" id="{{$log->id}}">
-                                <x-slot name="modalTitleText">Sil</x-slot>
-                                <x-slot name="modalButtonText">Sil</x-slot>
-                                <x-slot name="modalBodyText">Logu silmek ister misiniz?</x-slot>
-                            </x-modal-button>
-                        </form>
-                    </td>
+
                 </tr>
 
             @endforeach
@@ -54,7 +46,7 @@
             {{ $userLogs->links() }}
         </div>
         <div class="mt-5 m-lg-5 w-20 d-flex justify-content-end">
-            <form action="{{ route('userLogsDeleteAll') }}" method="POST">
+            <form action="{{ route('userActionLogsDeleteAll') }}" method="POST">
                 @csrf
                 @method('DELETE')
                 <x-modal-button class="btn btn-danger btn-sm" id="default">

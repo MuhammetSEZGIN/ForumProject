@@ -31,6 +31,8 @@ Route::get("/allUsers", [AdminController::class, "allUsers"])->name("allUsers");
 Route::get("allArticles", [AdminController::class, "allArticles"])->name("allArticles");
 Route::delete("/deleteArticleAdmin/delete/{id}", [AdminController::class, "deleteArticleAdmin"])->name("deleteArticleAdmin");
 Route::patch("publishArticle/{id}", [AdminController::class, "publishArticle"])->name("publishArticle");
+Route::get("/userActionLogs", [AdminController::class, "userActionLogs"])->name("userActionLogs");
+Route::delete("/userActionLogs/deleteAll", [AdminController::class, "userActionLogsDeleteAll"])->name("userActionLogsDeleteAll");
 
 Route::get("/reportedComments", [AdminController::class, "reportedComments"])->name("reportedComments");
 Route::get("reportedArticles ", [AdminController::class, "reportedArticles"])->name("reportedArticles");

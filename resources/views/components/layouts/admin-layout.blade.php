@@ -186,7 +186,7 @@
                 </a>
             </li>
             <li>
-                <a href="{{route('allArticles')}}" class="nav-link link-body-emphasis">
+                <a href="{{route('allArticles')}}" class="nav-link link-body-emphasis {{request()->routeIs('allArticles') ? 'active':''}}">
                     <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"/></svg>
                     Articles
                 </a>
@@ -195,6 +195,11 @@
                 <a href="{{route("userLogs")}}" class="nav-link link-body-emphasis {{request()->routeIs('userLogs') ? 'active':''}}">
                     <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#people-circle"/></svg>
                     User Logs
+                </a>
+            </li> <li>
+                <a href="{{route("userActionLogs")}}" class="nav-link link-body-emphasis {{request()->routeIs('userActionLogs') ? 'active':''}}">
+                    <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#people-circle"/></svg>
+                    User Action Logs
                 </a>
             </li>
 

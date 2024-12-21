@@ -38,15 +38,33 @@ class AdminController extends Controller
         }
 
         if ($boolenSearch)
-            $userLogs = $query->paginate(6)->appends(['search' => $request["search"]]);
+            $userLogs = $query->paginate(6)->appends(['search' => $request["search"]])->orderBy('created_at', 'desc');
         else
-            $userLogs = $query->where("userID", "!=", $userID)->paginate(6);
+            $userLogs = $query->with('user')->where("userID", "!=", $userID)->orderBy('created_at', 'desc')->paginate(6);
 
 
         return view('admin.userlogs', ['userLogs' => $userLogs])
             ->with('success', AdminMessageEnum::VIEW_ALL_LOGS);
     }
-
+    public function userActionLogs(Request $request)
+    {
+        $query = UserLog::query();
+        if ($request->has('search') && $request["search"] != '') {
+            $query->where('action', 'like', '%' . $request["search"] . '%');
+        }
+        $userLogs = $query->with('user')->orderBy('created_at', 'desc')->paginate(6);
+        return view('admin.useractionlog', ['userLogs' => $userLogs])
+            ->with('success', AdminMessageEnum::VIEW_ALL_LOGS);
+    }
+    public function userActionLogsDeleteAll()
+    {
+        if(UserLog::truncate()){
+            return redirect()->route('userActionLogs')->
+            with('success', AdminMessageEnum::USER_LOGS_DELETE_ALL_SUCCESS);
+        }
+        UserActionLogHelper::logAction("Tüm Kullanıcı Hareket Logları silindi", request()->all());
+        return redirect()->route('userActionLogs')->with('error', AdminMessageEnum::USER_LOGS_DELETE_ALL_FAIL);
+    }
     public function userLogsDelete($id)
     {
         $userLogs = UserLog::find($id);
@@ -67,6 +85,7 @@ class AdminController extends Controller
             return redirect()->route('userLogs')->
             with('success', AdminMessageEnum::USER_LOGS_DELETE_ALL_SUCCESS);
         }
+        UserActionLogHelper::logAction(AdminMessageEnum::USER_LOGS_DELETE_ALL_SUCCESS, request()->all());
         return redirect()->route('userLogs')->
         with('error', AdminMessageEnum::USER_LOGS_DELETE_ALL_FAIL);
     }
