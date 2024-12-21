@@ -25,7 +25,7 @@ class UserActionLogHelper
         }
 
         // Kullanıcı loglarını tutmak için UserLog tablosuna kayıt atar.
-        UserActionLog::create([
+        UserActionLog::query()->create([
             'userID' => Auth::check()? Auth::id():1,
             'action' => $action,
             'ip' => request()->ip(),
@@ -34,5 +34,6 @@ class UserActionLogHelper
             'created_at' => now(),
             'updated_at' => now()
         ]);
+
     }
 }

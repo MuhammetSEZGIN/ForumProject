@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\UserActionLog;
 use Illuminate\Support\Facades\Auth;
 use App\Helpers\AdminMessageEnum;
 use App\Helpers\UserActionLogHelper;
@@ -48,7 +49,7 @@ class AdminController extends Controller
     }
     public function userActionLogs(Request $request)
     {
-        $query = UserLog::query();
+        $query = UserActionLog::query();
         if ($request->has('search') && $request["search"] != '') {
             $query->where('action', 'like', '%' . $request["search"] . '%');
         }
@@ -58,7 +59,7 @@ class AdminController extends Controller
     }
     public function userActionLogsDeleteAll()
     {
-        if(UserLog::truncate()){
+        if(UserActionLog::truncate()){
             return redirect()->route('userActionLogs')->
             with('success', AdminMessageEnum::USER_LOGS_DELETE_ALL_SUCCESS);
         }
