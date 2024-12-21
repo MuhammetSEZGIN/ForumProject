@@ -33,8 +33,7 @@ class AdminController extends Controller
                 })
                 ->orWhere('ip', 'like', '%' . $request["search"] . '%')
                 ->orWhere('url', 'like', '%' . $request["search"] . '%')
-                ->orWhere('created_at', 'like', '%' . $request["search"] . '%')
-            ;
+                ->orWhere('created_at', 'like', '%' . $request["search"] . '%');
             $boolenSearch = true;
         }
 
@@ -47,25 +46,35 @@ class AdminController extends Controller
         return view('admin.userlogs', ['userLogs' => $userLogs])
             ->with('success', AdminMessageEnum::VIEW_ALL_LOGS);
     }
+
     public function userActionLogs(Request $request)
     {
         $query = UserActionLog::query();
         if ($request->has('search') && $request["search"] != '') {
-            $query->where('action', 'like', '%' . $request["search"] . '%');
+            $query->where('action', 'like', '%' . $request["search"] . '%')
+                ->orWhere('ip', 'like', '%' . $request["search"] . '%')
+                ->orWhere('userAgent', 'like', '%' . $request["search"] . '%')
+                ->orWhere('postData', 'like', '%' . $request["search"] . '%')
+                ->orWhere('created_at', 'like', '%' . $request["search"] . '%')
+                ->orWhereHas('user', function ($q) use ($request) {
+                    $q->where('name', 'like', '%' . $request["search"] . '%');
+                });
         }
         $userLogs = $query->with('user')->orderBy('created_at', 'desc')->paginate(6);
         return view('admin.useractionlog', ['userLogs' => $userLogs])
             ->with('success', AdminMessageEnum::VIEW_ALL_LOGS);
     }
+
     public function userActionLogsDeleteAll()
     {
-        if(UserActionLog::truncate()){
+        if (UserActionLog::truncate()) {
             return redirect()->route('userActionLogs')->
             with('success', AdminMessageEnum::USER_LOGS_DELETE_ALL_SUCCESS);
         }
         UserActionLogHelper::logAction("Tüm Kullanıcı Hareket Logları silindi", request()->all());
         return redirect()->route('userActionLogs')->with('error', AdminMessageEnum::USER_LOGS_DELETE_ALL_FAIL);
     }
+
     public function userLogsDelete($id)
     {
         $userLogs = UserLog::find($id);

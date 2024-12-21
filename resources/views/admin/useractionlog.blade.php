@@ -2,7 +2,7 @@
 
     <div class="container w-100 mt-5" style="overflow-x: auto;">
         <div class="mt-5 m-lg-5 w-20 d-flex justify-content-end">
-            <form action="{{ route('userLogs') }}" method="GET">
+            <form action="{{ route('userActionLogs') }}" method="GET">
                 <div class="input-group">
                     <input type="text" name="search" class="form-control" placeholder="Tablo Bilgilerini Ara"
                            value="{{ request('search') }}">
