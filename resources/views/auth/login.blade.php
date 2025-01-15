@@ -26,7 +26,7 @@
 
                     <!-- Register buttons -->
                     <div class="text-center">
-                        <p>Kaydolmadın mı hirbo <a href="{{route("register")}}">Kaydol</a></p>
+                        <p>Kaydolmadın mı hırbo <a href="{{route("register")}}">Kaydol</a></p>
                     </div>
                 </form>
             </div>
