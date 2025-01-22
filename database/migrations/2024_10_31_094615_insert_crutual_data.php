@@ -22,12 +22,7 @@ return new class extends Migration
         User::insert(
             ["name"=>"anonim", "email"=>"anonim@gmail.com", "password"=>"qwe", "created_at"=>now(), "updated_at"=>now(), "roleID"=>3],
         );
-        User::create(
-            ["name"=>"Muhammet", "email"=>"Muhammet@gmail.com", "password"=>"aDMIN%55Forum", "created_at"=>now(), "updated_at"=>now(), "roleID"=>2],
-        );
-        User::create(
-            ["name"=>"admin", "email"=>"admin@admin.com", "password"=>"qwe", "created_at"=>now(), "updated_at"=>now(), "roleID"=>2],
-        );
+      
         Category::insert([
             ["categoryName" => "Yazılım", "created_at" => now(), "updated_at" => now()],
             ["categoryName" => "Donanım", "created_at" => now(), "updated_at" => now()],
