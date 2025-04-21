@@ -11,16 +11,6 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 
-Route::get('/test', function () {
-    Mail::to('sezginmuhammet454@gmail.com')->send(new AuthReset());
-    return "Mail Sent";
-});
-Route::get('/info', function () {
-    return
-        phpinfo();
-
-});
-
 //Admin Routes
 Route::get("/index", [AdminController::class, "index"])->name("adminIndex");
 Route::get("/userLogs", [AdminController::class, "userLogs"])->name("userLogs");
@@ -40,13 +30,16 @@ Route::delete("/comment/delete/{id}", [AdminController::class, "commentDelete"])
 Route::delete("/article/delete/{id}", [AdminController::class, "articleDelete"])->name("articleDelete");
 
 // Register Routes
-Route::post("/register", [RegisterController::class, "register"])->name("register.submit");
+Route::middleware('throttle:global')->group(function () {
+    Route::post("/register", [RegisterController::class, "register"])->name("register.submit");
 Route::get("/register", [RegisterController::class, "index"])->name("register");
 
 // Login Routes
 Route::get("/login", [LoginController::class, "index"])->name("login");
 Route::post("/login", [LoginController::class, "login"])->name("login.submit");
 Route::post("/logout", [LoginController::class, "logout"])->name("logout");
+
+});
 
 // Article Routes
 Route::get('/', [ArticleController::class, 'index'])->name('mainMenu');
